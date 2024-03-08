@@ -1,0 +1,3220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zendesk</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <script src="https://kit.fontawesome.com/c48811e164.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha512-uETKo8ud4U5qF6Ye54vBCflMUxMg6+IGbjeDTl/ztsD98E6ttsJy+in+8+Eg6STQFOPyzxJWXYVJ7Wd/vTqk8Q=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+
+<style>
+    /* Custom CSS for the content area */
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #mainsection {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .maincontent {
+      display: flex;
+    }
+
+    hr {
+      margin: 6px 0;
+    }
+
+    #navbar {
+      flex-shrink: 0;
+      background-color: #f8f9f9;
+      display: flex;
+    }
+
+    #navbar ul.navbar-nav {
+      list-style: none; /* Remove default list styling */
+      display: flex;
+      margin-right: 100px;
+    }
+
+    #navbar a {
+      color: #007bff;
+      font-size: 14px;
+      text-align: center;
+      margin: 3px 30px;
+      padding: 2px 5px;
+      border-radius: 5px;
+      text-decoration: none; /* Remove default underline */
+    }
+
+    #navbar a.nav-link.active {
+      background-color: #d2d6d6;
+      color: #5a5959;
+    }
+
+    /* Common styles for both sidebar and navbar */
+    #sidebar {
+      flex-shrink: 0;
+      width: 250px;
+      background-color: #f8f9f9;
+      z-index: 1;
+    }
+
+    #sidebar div {
+      margin-bottom: 10px;
+    }
+
+    #sidebar > div > span {
+      font-size: 12px;
+      margin: 5px;
+    }
+
+    #sidebar a {
+      font-size: 14px;
+      margin: 3px 8px;
+      padding: 2px 5px;
+      text-decoration: none;
+    }
+
+    #sidebar a.nav-link.active {
+      background-color: #d2d6d6;
+      color: #5a5959;
+    }
+
+    #content {
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    /* Custom CSS for the content area */
+    .hidden {
+      display: none;
+    }
+
+    /* -------------Settings----------------------- */
+    /* Styles for the range slider */
+    #settings h2 {
+      font-size: 25px;
+      margin-bottom: 40px;
+    }
+
+    #settings p {
+      color: #979595;
+    }
+
+    #settings #performance {
+      margin: 0;
+    }
+
+    /* ---------------------------------- */
+
+    /* Access--------------------------- */
+    #access h2 {
+      font-size: 25px;
+      margin-bottom: 40px;
+    }
+
+    #access h3 {
+      font-size: 20px;
+    }
+
+    #access p {
+      font-size: 14px;
+      color: #5a5959;
+    }
+
+    form {
+      width: 480px;
+    }
+
+    form div {
+      width: 75%;
+    }
+
+    #roleRestrictionsSelect {
+      font-size: 14px;
+    }
+
+    /* -----------------------access end--------------------- */
+
+    #export {
+      margin-bottom: 100px;
+    }
+
+    #export h2 {
+      font-size: 25px;
+      margin: 0;
+    }
+
+    #export p {
+      font-size: 14px;
+      color: #5a5959;
+    }
+
+    #activeContent,
+    #activation_heading p,
+    #about p {
+      font-size: 14px;
+      color: #a8a8a8;
+    }
+
+    #activation_heading h2,
+    #about h2 {
+      font-size: 30px;
+      color: #434242;
+    }
+
+    #tablePlaceholder {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    /* //============================== */
+
+    /* ---active tabs */
+
+    /* Style for active tab */
+    #toggleTabs .nav-link {
+      color: grey;
+      text-decoration: none;
+    }
+
+    #toggleTabs .nav-link.active {
+      color: #0176b3;
+    }
+
+    #toggleTabs .nav-link:focus,
+    #toggleTabs .nav-link:hover {
+      text-decoration: none;
+    }
+
+    /* active tab css gpt */
+
+    .disabled {
+      color: gray !important;
+      cursor: not-allowed;
+    }
+
+    #loader-outer{
+        height: 100%;
+        display: none;
+        z-index: 9999999;
+        position: fixed;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+    #loader-overlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #616161;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 10px;
+    }
+
+    #loading-message {
+      font-size: 20px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .spinner-border{
+        width: 4rem;
+        height: 4rem;
+        border-width:0.30em;
+    }
+</style>
+
+</head>
+
+<body>
+<div id="loader-outer">
+    <div id="loader-overlay" class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div id="mainsection">
+    <!-- Sidebar -->
+    <div id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 bg-#f8f9f9 border-end">
+        <div>
+            <span class="text-uppercase text-black fw-bold">Getting Started</span>
+            <hr/>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li><a href="#" id="activationButton" class="nav-link fw-semibold" onclick="showComponent('activation')">ACTIVATION</a>
+                </li>
+            </ul>
+        </div>
+
+        <div onclick="showSupportNavItems()" style="cursor: pointer;">
+            <span class="text-uppercase text-black fw-bold">Support</span>
+        </div>
+        <div id="talkDiv" onclick="showTalkNavItems()" style="cursor: pointer;">
+            <span class="text-uppercase fw-bold">Talk</span>
+        </div>
+        <div>
+            <span class="text-uppercase text-black fw-bold">Settings</span>
+            <hr/>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link fw-semibold free silver" onclick="showComponent('settings')">Settings</a>
+                </li>
+                <li class="nav-item" id="savedexports">
+                    <a href="#" class="nav-link fw-semibold free" onclick="showComponent('saved_exports')">Saved Exports</a>
+                </li>
+                <li class="nav-item" id="template_tab">
+                    <a href="#" class="nav-link fw-semibold free silver" onclick="showComponent('templates')">Templates</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link fw-semibold free silver" onclick="showComponent('access')">Access</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link fw-semibold" onclick="showComponent('about')">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link fw-semibold" onclick="showComponent('subscription')">Subscription</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link fw-semibold" onclick="showComponent('help_center')">Help Center</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+<!-- Main Content -->
+<div class="maincontent" style="display: flex;flex-direction: column;width: 100%;">
+    <nav id="navbar" class="navbar navbar-expand-lg" style="display: none;">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item" id="ticketsNavItem">
+                    <a href="#" class="nav-link fw-semibold" onclick="showComponent('tickets')">Tickets</a>
+                </li>
+                <li class="nav-item" id="commentsNavItem">
+                    <a href="#" class="nav-link fw-semibold free silver" onclick="showComponent('comments')">Comments</a>
+                </li>
+                <li class="nav-item" id="usersNavItem">
+                    <a href="#" class="nav-link fw-semibold free" onclick="showComponent('users')">Users</a>
+                </li>
+                <li class="nav-item" id="organizationsNavItem">
+                    <a href="#" class="nav-link fw-semibold free" onclick="showComponent('organizations')">Organizations</a>
+                </li>
+                <li class="nav-item" id="attachmentsNavItem">
+                    <a href="#" class="nav-link fw-semibold free silver" onclick="showComponent('attachments')">Attachments</a>
+                </li>
+                <li class="nav-item" id="callsNavItem">
+                    <a href="#" class="nav-link fw-semibold" onclick="showComponent('calls')">Calls</a>
+                </li>
+                <li class="nav-item" id="legsNavItem">
+                    <a href="#" class="nav-link fw-semibold" onclick="showComponent('legs')">Legs</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="content" style="width: 100%;">
+        <!-- Placeholder for Components -->
+
+        <!-- navbar -->
+
+
+        <!-- Activation Component -->
+        <div id="activation" class="container">
+            <div id="activation_heading" style="text-align: center;width: 60%;margin: auto; margin-left: 40px;">
+                <h2 style="margin-bottom: 20px;">Export your data in 3 simple steps</h2>
+            </div>
+
+            <div class="d-flex" style="padding: 20px;">
+                <!-- Dummy Image Placeholder -->
+                <div class="image-placeholder"
+                     style="width: 500px;height: 230px; background-color: #e9ecef; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; padding: 0px;margin-left: 50px;">
+                    <img style="width: 100%;"
+                         src="https://bluerockapps.co/wp-content/uploads/2024/03/ticket.png"/>
+                </div>
+
+
+                <!-- Dummy text and dropdown -->
+                <div class="mb-3" style="width: 400px; padding: 20px;">
+                    <h5>Select data to be exported</h5>
+                    <p style="font-size: 15px;font-weight: 400;">Export tickets, users, organizations, attachments and more</p>
+                    <h5>Choose for multiple format option</h5>
+                    <p style="font-size: 15px;font-weight: 400;">Select from CSV, JSON, EXCEL or Google Drive formats. </p>
+
+                </div>
+            </div>
+
+
+            <!-- Form with dropdown and submit button -->
+            <div class="d-flex" style="margin-left: 200px;">
+                <form id="activationForm" class="d-flex" style="gap: 10px">
+<!--                    <div style="width: 350px;">-->
+<!--                        <select class="form-select" id="optionSelect" required>-->
+<!--                            <option value="">Choose installation reason</option>-->
+<!--                            <option value="reason1">Reason 1</option>-->
+<!--                            <option value="reason2">Reason 2</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+                    <div style="width: 200px;">
+                        <button type="submit" class="btn btn-primary" id="continueButton">Continue Activation
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- end of activation component -->
+
+        <!-- New Component: Export Data Form -->
+        <div id="exportDataForm" class="container m-3 hidden" style="width: 80%; ">
+            <div id="activation_heading" style="text-align: center;width: 80%;margin: auto; margin-left: 20px;">
+                <h2>Export your data in 3 simple steps</h2>
+            </div>
+
+            <p id="alert_msg"
+                       style="font-size: 25px; margin-left: 50px; color:#46ba8a;"></p>
+            <div class="fw-semibold" style="margin: auto;">
+                <form id="exportDataFormSubmitform" style="margin-left: 5rem;">
+                    <div class="d-flex justify-content-between " style="gap: 10px;">
+                        <div class="mb-3 flex-fill mr-2">
+                            <label for="firstName" class="form-label">First name*</label>
+                            <input type="text" name="firstname" class="form-control" id="firstName"
+                                   placeholder="First name" required>
+                        </div>
+                        <div class="mb-3 flex-fill ml-2">
+                            <label for="lastName" class="form-label">Last name*</label>
+                            <input type="text" name="lastname" class="form-control" id="lastName"
+                                   placeholder="Last name" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="emailAddress" class="form-label">Email address*</label>
+                        <input type="email" name="email" class="form-control" id="emailAddress"
+                               placeholder="Email address" required readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="subdomains" class="form-label">Subdomain*</label>
+                        <input type="text" name="subdomains" class="form-control" id="subdomains"
+                               placeholder="subdomain" required readonly>
+
+                        <input type="hidden" name="plan" class="form-control" id="plan"
+                               placeholder="plan" value="plan">
+
+                        <p style="font-size: 10px; color: #919191;">webtunixsupport</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="additionalInfo" class="form-label">Additional information*</label>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="additionalInfo" checked disabled>
+                            <label style="font-size: 12px;" class="form-check-label" for="additionalInfo">
+                                Zendesk Subscription: Professional<br>
+                                Number of agents: 1<br>
+                                Number of apps: 1
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" style="margin-left: 100px;" class="btn btn-primary">Continue Activation
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- End of New Component —>
+        <!-- export data form -->
+
+
+        <!-- start of mty ticket compo -->
+        <div id="tickets" class="container m-3 hidden">
+            <h3 class="mb-4" style="margin-bottom: 10px;">Ticket Export</h3>
+            <h5 class="mb-4">Start new export</h5>
+
+            <div class="mb-3 p-3 border rounded d-flex justify-content-between"
+                 style="height: 120px; margin-top: -10px;">
+                <div>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Ticket Based on View</p>
+                    <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export all tickets contained in a
+                        view.</p>
+                    <p class="fs-6" style="color: #919191; font-style: italic;">High flexibility, low performance.</p>
+                </div>
+                <div style="padding-right: 20px;">
+                    <button type="button" class="btn btn-outline-primary" id="continueViewBased"
+                            style="color: #007bff; border-color: #007bff; background-color: transparent;"
+                            onmouseout="this.style.color='#007bff'; this.style.borderColor='#007bff'; this.style.backgroundColor='transparent';">
+                        Continue
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-3 p-3 border rounded  d-flex justify-content-between" style="height: 120px;">
+                <div>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Ticket Based on Search</p>
+                    <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export the results of any search
+                        query.</p>
+                    <p class="fs-6" style="color: #919191; font-style: italic;">Native search syntax and options,
+                        average performance</p>
+                </div>
+                <div style="padding-right: 20px;">
+                    <button type="button" class="btn btn-outline-primary free" id="continueSearchBased"
+                            style="color: #007bff; border-color: #007bff; background-color: transparent;"
+                            onmouseout="this.style.color='#007bff'; this.style.borderColor='#007bff'; this.style.backgroundColor='transparent';">
+                        Continue
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="mb-3 p-3 border rounded  d-flex justify-content-between" style="height: 120px;">
+                <div>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Ticket Based on Time</p>
+                    <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export all tickets that have been
+                        created or updated within a certain date range.</p>
+                    <p class="fs-6" style="color: #919191; font-style: italic;">High performance, no filtering.</p>
+                </div>
+
+                <div style="padding-right: 20px;">
+                    <button type="button" class="btn btn-outline-primary free" id="continueTimeBased"
+                            style="color: #007bff; border-color: #007bff; background-color: transparent;"
+                            onmouseout="this.style.color='#007bff'; this.style.borderColor='#007bff'; this.style.backgroundColor='transparent';">
+                        Continue
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ---------------------------------- tickets start--------------------------------------- -->
+
+
+        <!-- ticket export  -->
+        <div id="ticketExportComponent" class="container mt-3 hidden">
+
+            <div id="table_content" style="height: 560px; width: 85%;">
+                <h2>Ticket Export</h2>
+                <!-- Select a view dropdown -->
+                <div style="margin-top: 20px;" class="mb-3">
+                    <p for="viewSelect" class="form-label" style="font-weight: 600;">Select a view</p>
+                    <p style="font-size: 14px; color: #919191; margin-top: -10px;" for="viewSelect" class="form-label">
+                        Select a view that contains ticket you would like to export</p>
+
+                    <select style="width: 400px;" class="form-select" id="viewSelect" onchange="checkSelections()">
+                        <option value="" selected>Please select</option>
+                        <option value="All unsolved tickets">All unsolved tickets</option>
+                        <option value="Pending tickets">Pending tickets</option>
+                        <option value="Recently solved tickets">Recently solved tickets</option>
+                        <option value="Recently updated tickets">Recently updated tickets</option>
+                        <option value="Unassigned tickets">Unassigned tickets</option>
+                        <option value="Your unsolved tickets">Your unsolved tickets</option>
+
+                        <!-- Add other options here -->
+                    </select>
+                    <small id="viewSelectMessage"
+                           style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;"></small>
+                </div>
+                <hr/>
+                <!-- Select a template dropdown -->
+                <div style="margin-top: 20px;" class="mb-3">
+                    <p style="font-weight: 600;" for="templateSelect" class="form-label">Select Export Format</p>
+                    <p style="font-size: 14px; color:#919191; margin-top: -10px;" for="templateSelect"
+                       class="form-label">Select an export template</p>
+                    <select style="width: 400px;" class="form-select" id="templateSelect" onchange="checkSelections()">
+                        <option value="" selected>Please select</option>
+                        <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                        <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                        <option value="JSON" id="jsonOption">JSON</option>
+                        <option value="XML" id="xmlOption">XML</option>
+
+                        <!-- Add other options here -->
+                    </select>
+                </div>
+                <hr/>
+                <!-- Table placeholder -->
+                <div style="height: 200px;" id="tablePlaceholder" class="d-none">
+                    <!-- Table for field mapping -->
+                    <table class="table" id="fieldMappingTable">
+                        <thead>
+                        <tr>
+                            <th style="width: 20px;"></th>
+                            <th>Field</th>
+                            <th>Group</th>
+                            <th>Type</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Table rows will be added here -->
+                        </tbody>
+                    </table>
+                    <!-- Add field dropdown -->
+                    <div class="mb-3">
+                        <select style="width: 400px; margin-left: 40px;" class="form-select" id="addFieldSelect"
+                                onchange="addFieldToTable()">
+                            <option value="">Add field</option>
+                            <optgroup label="ticket">
+                                <option value="id">Ticket ID</option>
+                                <option value="external_id">Ticket External ID</option>
+                                <option value="type">Ticket Type</option>
+                                <option value="subject">Ticket Subject</option>
+                                <option value="raw_subject">Ticket Subject(raw)</option>
+                                <option value="description">Ticket Description</option>
+                                <option value="priority">Ticket Priority</option>
+                                <option value="status">Ticket Status</option>
+                                <option value="recipient">Ticket Recipient</option>
+                                <option value="forum_topic_id">Ticket Forum topic ID</option>
+                                <option value="problem_id">Ticket Problem ID</option>
+                                <option value="has_incidents">Ticket Has incidents?</option>
+                                <option value="due_at">Ticket Due date</option>
+                                <option value="tags">Ticket Tags</option>
+                                <option value="count">Ticket Comment count</option>
+                                <option value="created_at">Ticket Created at</option>
+                                <option value="updated_at">Ticket Updated at</option>
+                            </optgroup>
+                            <!--                        <optgroup label="dates">-->
+                            <!--                            <option value=""></option>-->
+                            <!--                        </optgroup>-->
+                            <!--                        <optgroup label="satisfaction-rating">-->
+                            <!--                            <option value="">Satisfaction score</option>-->
+                            <!--                            <option value="">Satisfaction comment</option>-->
+                            <!--                        </optgroup>-->
+                            <optgroup label="requester">
+                                <option value="id">Requester ID</option>
+                                <option value="external_id">Requester external ID</option>
+                                <option value="name">Requester name</option>
+                                <option value="alias">Requester alias</option>
+                                <option value="email">Requester email</option>
+                                <option value="phone">Requester phone</option>
+                                <option value="locale">Requester locale</option>
+                                <option value="time_zone">Requester time zone</option>
+                                <option value="role">Requester role</option>
+                                <option value="role_type">Requester role type</option>
+                                <option value="details">Requester details</option>
+                                <option value="notes">Requester notes</option>
+                                <option value="tags">Requester tags</option>
+                                <option value="active">Requester active?</option>
+                                <option value="verified">Requester verified?</option>
+                                <option value="suspended">Requester suspended?</option>
+                                <option value="created_at">Requester created at</option>
+                                <option value="updated_at">Requester updated at</option>
+                                <option value="last_login_at">Requester last login</option>
+                            </optgroup>
+                            <optgroup label="submitter">
+                                <option value="id">Submitter ID</option>
+                                <option value="external_id">Submitter external ID</option>
+                                <option value="name">Submitter name</option>
+                                <option value="alias">Submitter alias</option>
+                                <option value="email">Submitter email</option>
+                                <option value="phone">Submitter phone</option>
+                                <option value="locale">Submitter locale</option>
+                                <option value="time_zone">Submitter time zone</option>
+                                <option value="role">Submitter role</option>
+                                <option value="role_type">Submitter role type</option>
+                                <option value="details">Submitter details</option>
+                                <option value="notes">Submitter notes</option>
+                                <option value="tags">Submitter tags</option>
+                                <option value="active">Submitter active?</option>
+                                <option value="verified">Submitter verified?</option>
+                                <option value="suspended">Submitter suspended?</option>
+                                <option value="created_at">Submitter created at</option>
+                                <option value="updated_at">Submitter updated at</option>
+                                <option value="last_login_at">Submitter last login</option>
+                            </optgroup>
+                            <optgroup label="assignee">
+                                <option value="id">Assignee ID</option>
+                                <option value="external_id">Assignee external ID</option>
+                                <option value="name">Assignee name</option>
+                                <option value="alias">Assignee alias</option>
+                                <option value="email">Assignee email</option>
+                                <option value="phone">Assignee phone</option>
+                                <option value="locale">Assignee locale</option>
+                                <option value="time_zone">Assignee time zone</option>
+                                <option value="role">Assignee role</option>
+                                <option value="role_type">Assignee role type</option>
+                                <option value="details">Assignee details</option>
+                                <option value="notes">Assignee notes</option>
+                                <option value="tags">Assignee tags</option>
+                                <option value="active">Assignee active?</option>
+                                <option value="verified">Assignee verified?</option>
+                                <option value="suspended">Assignee suspended?</option>
+                                <option value="created_at">Assignee created at</option>
+                                <option value="updated_at">Assignee updated at</option>
+                                <option value="last_login_at">Assignee last login</option>
+                            </optgroup>
+                            <optgroup label="group">
+                                <option value="id">Group ID</option>
+                                <option value="name">Group name</option>
+                                <option value="created_at">Group created at</option>
+                                <option value="updated_at">Group updated at</option>
+                            </optgroup>
+                            <optgroup label="organization">
+                                <option value="id">Organization ID</option>
+                                <option value="external_id">Organization external ID</option>
+                                <option value="name">Organization name</option>
+                                <option value="details">Organization details</option>
+                                <option value="notes">Organization notes</option>
+                                <option value="tags">Organization tags</option>
+                                <option value="domain_names">Organization domain names</option>
+                                <option value="created_at">Organization created at</option>
+                                <option value="updated_at">Organization updated at</option>
+                            </optgroup>
+                            <optgroup label="brand">
+                                <option value="id">Brand ID</option>
+                                <option value="name">Brand name</option>
+                                <option value="active">Brand active?</option>
+                                <option value="default">Default brand?</option>
+                                <option value="created_at">Brand created at</option>
+                                <option value="updated_at">Brand updated at</option>
+                            </optgroup>
+                            <optgroup label="form">
+                                <option value="id">Form ID</option>
+                                <option value="name">Form Name</option>
+                            </optgroup>
+                            <!--                            <optgroup label="channel">-->
+                            <!--                                <option value=""></option>-->
+                            <!--                            </optgroup>-->
+                            <optgroup label="metric-set">
+                                <option value="id">Metric set ID</option>
+                                <option value="group_stations">Metric Group stations</option>
+                                <option value="assignee_stations">Metric Assignee stations</option>
+                                <option value="reopens">Metric Reopens</option>
+                                <option value="replies">Metric Replies</option>
+
+                                <option value="reply_time_in_minutes_calendar">Metric Reply time in minutes (calendar)
+                                </option>
+                                <option value="reply_time_in_minutes_business">Metric Reply time in minutes (business
+                                    hours)
+                                </option>
+
+                                <option value="first_resolution_time_in_minutes_calendar">Metric First resolution time
+                                    in minutes (calendar)
+                                </option>
+                                <option value="first_resolution_time_in_minutes_business">Metric First resolution time
+                                    in minutes (business hours)
+                                </option>
+
+                                <option value="full_resolution_time_in_minutes_calendar">Metric Full resolution time in
+                                    minutes (calendar)
+                                </option>
+                                <option value="full_resolution_time_in_minutes_business">Metric Full resolution time in
+                                    minutes (business hours)
+                                </option>
+
+                                <option value="agent_wait_time_in_minutes_calendar">Metric Agent wait time in minutes
+                                    (calendar)
+                                </option>
+                                <option value="agent_wait_time_in_minutes_business">Metric Agent wait time in minutes
+                                    (business hours)
+                                </option>
+
+                                <option value="requester_wait_time_in_minutes_calendar">Metric Requester wait time in
+                                    minutes (calendar)
+                                </option>
+                                <option value="requester_wait_time_in_minutes_business">Metric Requester wait time in
+                                    minutes (business hours)
+                                </option>
+
+                                <option value="on_hold_time_in_minutes_calendar">Metric On hold time in minutes
+                                    (calendar)
+                                </option>
+                                <option value="on_hold_time_in_minutes_business">Metric On hold time in minutes
+                                    (business hours)
+                                </option>
+
+                                <option value="assignee_updated_at">Metric Assignee updated at</option>
+                                <option value="requester_updated_at">Metric Requester updated at</option>
+                                <option value="status_updated_at">Metric Status updated at</option>
+                                <option value="initially_assigned_at">Metric Initially assigned at</option>
+                                <option value="assigned_at">Metric Assigned at</option>
+                                <option value="solved_at">Metric Solved at</option>
+                                <option value="latest_comment_added_at">Metric Latest comment added at</option>
+                            </optgroup>
+                            <optgroup label="custom-fields">
+                                <option value="subject">Subject</option>
+                                <option value="description">Description</option>
+                                <option value="status">Status</option>
+                                <option value="type">Type</option>
+                                <option value="priority">Priority</option>
+                                <option value="group_name">Group</option>
+                                <option value="assignee_name">Assignee</option>
+                                <option value="ticket_status">Ticket status</option>
+                                <option value="topic">Topic</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divider Line -->
+<!--            <div id="fixed-bottom">-->
+                <!--                <hr/>-->
+                <!-- Button Group at the bottom -->
+                <div style="gap: 5px;" class="d-flex justify-content-end mb-3">
+                    <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
+                    <button disabled type="button" class="btn btn-secondary mr-2"
+                            style="background-color: #e9ebed; border: none; color: #919191;">Save
+                    </button>
+                    <button type="button" class="btn btn-primary" style="background-color: #0176b3 ;" id="exportButton">
+                        Export
+                    </button>
+                </div>
+<!--            </div>-->
+
+        </div>
+        <!-- end of ticket export -->
+
+
+        <!-- ticket export search based -->
+        <div id="ticketExportComponentsearch" class="container mt-3 hidden">
+            <h2>Ticket Export</h2>
+
+            <div id="table_content" style="height: 560px; width: 85%;">
+                <!-- Select a view dropdown -->
+                <div style="margin-top: 20px;" class="mb-3">
+                    <p style="font-weight: 600;">Search query</p>
+                    <p style="font-size: 14px; color: #919191; margin-top: -10px;">Enter your search query. <span
+                            style="color: rgb(33, 136, 220);">Show search tips.</span></p>
+                    <input id="ticketQuery"
+                           style="display: block; width: 60%; border-radius: 5px ;border: 1px solid rgb(33, 136, 220);height: 30px;padding: 5px;"/>
+                    <!--            <small id="organizationViewSelectMessage" style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;">This view contains 2 organizations. false</small>-->
+                </div>
+
+                <hr/>
+
+                <!-- Select a template dropdown -->
+                <div style="margin-top: 20px;" class="mb-3">
+                    <label for="organizationTemplateSelect" class="form-label" style="font-weight: 600;">Select Export Format</label>
+                    <!-- <label for="organizationTemplateSelect" class="form-label" style="font-size: 14px; color:#919191; margin-top: -10px;">Select an export template</label> -->
+                    <select style="width: 400px;" class="form-select" id="templateSelect_search"
+                            onchange="checkSelections_search()">
+                        <option value="" selected></option>
+                        <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                        <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                        <option value="JSON">JSON</option>
+                        <option value="XML">XML</option>
+                    </select>
+                    <small id="searchSelectMessage"
+                           style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;"></small>
+                </div>
+
+                <hr/>
+
+                <!-- Table placeholder -->
+                <div style="height: 300px; overflow: auto; margin-bottom:20px;" id="ticketTablePlaceholder" class="d-none">
+                    <!-- Table for field mapping -->
+                    <table class="table" id="searchfieldMappingTable">
+                        <thead>
+                        <tr>
+                            <th style="width: 20px;"></th>
+                            <th>Field</th>
+                            <th>Group</th>
+                            <th>Type</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Table rows will be added here -->
+                        </tbody>
+                    </table>
+
+                    <!-- Add field dropdown -->
+                    <div class="mb-3">
+                        <select style="width: 400px; margin-left: 40px;" class="form-select" id="addFieldSelect_search"
+                                onchange="addFieldToTable_search()">
+                            <option value="">Add field</option>
+                            <optgroup label="ticket">
+                                <option value="id">Ticket ID</option>
+                                <option value="external_id">Ticket External ID</option>
+                                <option value="type">Ticket Type</option>
+                                <option value="subject">Ticket Subject</option>
+                                <option value="raw_subject">Ticket Subject(raw)</option>
+                                <option value="description">Ticket Description</option>
+                                <option value="priority">Ticket Priority</option>
+                                <option value="status">Ticket Status</option>
+                                <option value="recipient">Ticket Recipient</option>
+                                <option value="forum_topic_id">Ticket Forum topic ID</option>
+                                <option value="problem_id">Ticket Problem ID</option>
+                                <option value="has_incidents">Ticket Has incidents?</option>
+                                <option value="due_at">Ticket Due date</option>
+                                <option value="tags">Ticket Tags</option>
+                                <option value="count">Ticket Comment count</option>
+                                <option value="created_at">Ticket Created at</option>
+                                <option value="updated_at">Ticket Updated at</option>
+                            </optgroup>
+                            <!--                        <optgroup label="dates">-->
+                            <!--                            <option value=""></option>-->
+                            <!--                        </optgroup>-->
+                            <!--                        <optgroup label="satisfaction-rating">-->
+                            <!--                            <option value="">Satisfaction score</option>-->
+                            <!--                            <option value="">Satisfaction comment</option>-->
+                            <!--                        </optgroup>-->
+                            <optgroup label="requester">
+                                <option value="id">Requester ID</option>
+                                <option value="external_id">Requester external ID</option>
+                                <option value="name">Requester name</option>
+                                <option value="alias">Requester alias</option>
+                                <option value="email">Requester email</option>
+                                <option value="phone">Requester phone</option>
+                                <option value="locale">Requester locale</option>
+                                <option value="time_zone">Requester time zone</option>
+                                <option value="role">Requester role</option>
+                                <option value="role_type">Requester role type</option>
+                                <option value="details">Requester details</option>
+                                <option value="notes">Requester notes</option>
+                                <option value="tags">Requester tags</option>
+                                <option value="active">Requester active?</option>
+                                <option value="verified">Requester verified?</option>
+                                <option value="suspended">Requester suspended?</option>
+                                <option value="created_at">Requester created at</option>
+                                <option value="updated_at">Requester updated at</option>
+                                <option value="last_login_at">Requester last login</option>
+                            </optgroup>
+                            <optgroup label="submitter">
+                                <option value="id">Submitter ID</option>
+                                <option value="external_id">Submitter external ID</option>
+                                <option value="name">Submitter name</option>
+                                <option value="alias">Submitter alias</option>
+                                <option value="email">Submitter email</option>
+                                <option value="phone">Submitter phone</option>
+                                <option value="locale">Submitter locale</option>
+                                <option value="time_zone">Submitter time zone</option>
+                                <option value="role">Submitter role</option>
+                                <option value="role_type">Submitter role type</option>
+                                <option value="details">Submitter details</option>
+                                <option value="notes">Submitter notes</option>
+                                <option value="tags">Submitter tags</option>
+                                <option value="active">Submitter active?</option>
+                                <option value="verified">Submitter verified?</option>
+                                <option value="suspended">Submitter suspended?</option>
+                                <option value="created_at">Submitter created at</option>
+                                <option value="updated_at">Submitter updated at</option>
+                                <option value="last_login_at">Submitter last login</option>
+                            </optgroup>
+                            <optgroup label="assignee">
+                                <option value="id">Assignee ID</option>
+                                <option value="external_id">Assignee external ID</option>
+                                <option value="name">Assignee name</option>
+                                <option value="alias">Assignee alias</option>
+                                <option value="email">Assignee email</option>
+                                <option value="phone">Assignee phone</option>
+                                <option value="locale">Assignee locale</option>
+                                <option value="time_zone">Assignee time zone</option>
+                                <option value="role">Assignee role</option>
+                                <option value="role_type">Assignee role type</option>
+                                <option value="details">Assignee details</option>
+                                <option value="notes">Assignee notes</option>
+                                <option value="tags">Assignee tags</option>
+                                <option value="active">Assignee active?</option>
+                                <option value="verified">Assignee verified?</option>
+                                <option value="suspended">Assignee suspended?</option>
+                                <option value="created_at">Assignee created at</option>
+                                <option value="updated_at">Assignee updated at</option>
+                                <option value="last_login_at">Assignee last login</option>
+                            </optgroup>
+                            <optgroup label="group">
+                                <option value="id">Group ID</option>
+                                <option value="name">Group name</option>
+                                <option value="created_at">Group created at</option>
+                                <option value="updated_at">Group updated at</option>
+                            </optgroup>
+                            <optgroup label="organization">
+                                <option value="id">Organization ID</option>
+                                <option value="external_id">Organization external ID</option>
+                                <option value="name">Organization name</option>
+                                <option value="details">Organization details</option>
+                                <option value="notes">Organization notes</option>
+                                <option value="tags">Organization tags</option>
+                                <option value="domain_names">Organization domain names</option>
+                                <option value="created_at">Organization created at</option>
+                                <option value="updated_at">Organization updated at</option>
+                            </optgroup>
+                            <optgroup label="brand">
+                                <option value="id">Brand ID</option>
+                                <option value="name">Brand name</option>
+                                <option value="active">Brand active?</option>
+                                <option value="default">Default brand?</option>
+                                <option value="created_at">Brand created at</option>
+                                <option value="updated_at">Brand updated at</option>
+                            </optgroup>
+                            <optgroup label="form">
+                                <option value="id">Form ID</option>
+                                <option value="name">Form Name</option>
+                            </optgroup>
+                            <!--                            <optgroup label="channel">-->
+                            <!--                                <option value=""></option>-->
+                            <!--                            </optgroup>-->
+                            <optgroup label="metric-set">
+                                <option value="id">Metric set ID</option>
+                                <option value="group_stations">Metric Group stations</option>
+                                <option value="assignee_stations">Metric Assignee stations</option>
+                                <option value="reopens">Metric Reopens</option>
+                                <option value="replies">Metric Replies</option>
+
+                                <option value="reply_time_in_minutes_calendar">Metric Reply time in minutes (calendar)
+                                </option>
+                                <option value="reply_time_in_minutes_business">Metric Reply time in minutes (business
+                                    hours)
+                                </option>
+
+                                <option value="first_resolution_time_in_minutes_calendar">Metric First resolution time
+                                    in minutes (calendar)
+                                </option>
+                                <option value="first_resolution_time_in_minutes_business">Metric First resolution time
+                                    in minutes (business hours)
+                                </option>
+
+                                <option value="full_resolution_time_in_minutes_calendar">Metric Full resolution time in
+                                    minutes (calendar)
+                                </option>
+                                <option value="full_resolution_time_in_minutes_business">Metric Full resolution time in
+                                    minutes (business hours)
+                                </option>
+
+                                <option value="agent_wait_time_in_minutes_calendar">Metric Agent wait time in minutes
+                                    (calendar)
+                                </option>
+                                <option value="agent_wait_time_in_minutes_business">Metric Agent wait time in minutes
+                                    (business hours)
+                                </option>
+
+                                <option value="requester_wait_time_in_minutes_calendar">Metric Requester wait time in
+                                    minutes (calendar)
+                                </option>
+                                <option value="requester_wait_time_in_minutes_business">Metric Requester wait time in
+                                    minutes (business hours)
+                                </option>
+
+                                <option value="on_hold_time_in_minutes_calendar">Metric On hold time in minutes
+                                    (calendar)
+                                </option>
+                                <option value="on_hold_time_in_minutes_business">Metric On hold time in minutes
+                                    (business hours)
+                                </option>
+
+                                <option value="assignee_updated_at">Metric Assignee updated at</option>
+                                <option value="requester_updated_at">Metric Requester updated at</option>
+                                <option value="status_updated_at">Metric Status updated at</option>
+                                <option value="initially_assigned_at">Metric Initially assigned at</option>
+                                <option value="assigned_at">Metric Assigned at</option>
+                                <option value="solved_at">Metric Solved at</option>
+                                <option value="latest_comment_added_at">Metric Latest comment added at</option>
+                            </optgroup>
+                            <optgroup label="custom-fields">
+                                <option value="subject">Subject</option>
+                                <option value="description">Description</option>
+                                <option value="status">Status</option>
+                                <option value="type">Type</option>
+                                <option value="priority">Priority</option>
+                                <option value="group_name">Group</option>
+                                <option value="assignee_name">Assignee</option>
+                                <option value="ticket_status">Ticket status</option>
+                                <option value="topic">Topic</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+            </div>
+<!--            <div id="fixed-bottom">-->
+                <!-- Button Group at the bottom -->
+                <div style="gap: 5px;" class="d-flex justify-content-end mb-3">
+                    <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
+                    <button disabled type="button" class="btn btn-secondary mr-2"
+                            style="background-color: #e9ebed; border: none; color: #919191;">Save
+                    </button>
+                    <button type="button" class="btn btn-primary" style="background-color: #0176b3 ;"
+                            id="exportButton_search">Export
+                    </button>
+                </div>
+<!--            </div>-->
+        </div>
+        <!-- ticket export search based -->
+
+
+        <!-- ticket export time based -->
+        <div id="ticketExportComponentTime" class="container mt-3 hidden">
+            <h2>Ticket Export</h2>
+            <!--            <div style="margin-top: 20px;" class="mb-3">-->
+            <!--                <label for="attachmentViewSelect" class="form-label" style="font-weight: 600;">Select a view</label>-->
+            <!--                <p style="font-size: 14px; color: #919191; margin-top: -10px;" class="form-label">Select a view that-->
+            <!--                    contains attachments you would like to export</p>-->
+
+            <!--                <select style="width: 400px;" class="form-select" id="attachmentViewSelect"-->
+            <!--                        onchange="checkAttachmentSelections()">-->
+            <!--                    <option value="All attachments">All attachments</option>-->
+            <!--                    <option value="Resolved attachments">Resolved attachments</option>-->
+            <!--                    <option value="Pending attachments">Pending attachments</option>-->
+            <!--                </select>-->
+            <!--                <small id="attachmentViewSelectMessage"-->
+            <!--                       style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;">This view contains 2-->
+            <!--                    attachments.</small>-->
+            <!--            </div>-->
+            <div>
+                <p class="fw-semibold" style="margin: 0;">Date Range</p>
+                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range
+                    will be exported</p>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="startdate" value="02/02/2024" id="searchstartdate"/>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="enddate" value="02/15/2024" id="searchenddate"/>
+            </div>
+            <div style="margin-top: 20px;" class="mb-3">
+                <label for="templateSelect_time" style="font-weight: 600;" class="form-label">Select Export Format</label>
+                <p style="font-size: 14px; color:#919191; margin-top: -10px;" class="form-label">Select an export
+                    template</p>
+                <select style="width: 400px;" class="form-select" id="templateSelect_time"
+                        onchange="checkSelections_time()">
+                    <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                    <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                    <option value="JSON">JSON</option>
+                    <option value="XML">XML</option>
+                </select>
+                <small id="timeSelectMessage"
+                           style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;"></small>
+            </div>
+            <hr/>
+
+            <div style="height: 300px; overflow: auto; margin-bottom:20px;" id="searchticketTablePlaceholder" class="d-none">
+                <table class="table" id="timefieldMappingTable">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px;"></th>
+                        <th>Field</th>
+                        <th>Group</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="mb-3">
+                    <select style="width: 400px; margin-left: 40px;" class="form-select" id="ticketFieldSelect"
+                            onchange="addFieldToTable_time()">
+                        <option value="">Add field</option>
+                        <optgroup label="ticket">
+                            <option value="id">Ticket ID</option>
+                            <option value="external_id">Ticket External ID</option>
+                            <option value="type">Ticket Type</option>
+                            <option value="subject">Ticket Subject</option>
+                            <option value="raw_subject">Ticket Subject(raw)</option>
+                            <option value="description">Ticket Description</option>
+                            <option value="priority">Ticket Priority</option>
+                            <option value="status">Ticket Status</option>
+                            <option value="recipient">Ticket Recipient</option>
+                            <option value="forum_topic_id">Ticket Forum topic ID</option>
+                            <option value="problem_id">Ticket Problem ID</option>
+                            <option value="has_incidents">Ticket Has incidents?</option>
+                            <option value="due_at">Ticket Due date</option>
+                            <option value="tags">Ticket Tags</option>
+                            <option value="count">Ticket Comment count</option>
+                            <option value="created_at">Ticket Created at</option>
+                            <option value="updated_at">Ticket Updated at</option>
+                        </optgroup>
+                        <!--                        <optgroup label="dates">-->
+                        <!--                            <option value=""></option>-->
+                        <!--                        </optgroup>-->
+                        <!--                        <optgroup label="satisfaction-rating">-->
+                        <!--                            <option value="">Satisfaction score</option>-->
+                        <!--                            <option value="">Satisfaction comment</option>-->
+                        <!--                        </optgroup>-->
+                        <optgroup label="requester">
+                            <option value="id">Requester ID</option>
+                            <option value="external_id">Requester external ID</option>
+                            <option value="name">Requester name</option>
+                            <option value="alias">Requester alias</option>
+                            <option value="email">Requester email</option>
+                            <option value="phone">Requester phone</option>
+                            <option value="locale">Requester locale</option>
+                            <option value="time_zone">Requester time zone</option>
+                            <option value="role">Requester role</option>
+                            <option value="role_type">Requester role type</option>
+                            <option value="details">Requester details</option>
+                            <option value="notes">Requester notes</option>
+                            <option value="tags">Requester tags</option>
+                            <option value="active">Requester active?</option>
+                            <option value="verified">Requester verified?</option>
+                            <option value="suspended">Requester suspended?</option>
+                            <option value="created_at">Requester created at</option>
+                            <option value="updated_at">Requester updated at</option>
+                            <option value="last_login_at">Requester last login</option>
+                        </optgroup>
+                        <optgroup label="submitter">
+                            <option value="id">Submitter ID</option>
+                            <option value="external_id">Submitter external ID</option>
+                            <option value="name">Submitter name</option>
+                            <option value="alias">Submitter alias</option>
+                            <option value="email">Submitter email</option>
+                            <option value="phone">Submitter phone</option>
+                            <option value="locale">Submitter locale</option>
+                            <option value="time_zone">Submitter time zone</option>
+                            <option value="role">Submitter role</option>
+                            <option value="role_type">Submitter role type</option>
+                            <option value="details">Submitter details</option>
+                            <option value="notes">Submitter notes</option>
+                            <option value="tags">Submitter tags</option>
+                            <option value="active">Submitter active?</option>
+                            <option value="verified">Submitter verified?</option>
+                            <option value="suspended">Submitter suspended?</option>
+                            <option value="created_at">Submitter created at</option>
+                            <option value="updated_at">Submitter updated at</option>
+                            <option value="last_login_at">Submitter last login</option>
+                        </optgroup>
+                        <optgroup label="assignee">
+                            <option value="id">Assignee ID</option>
+                            <option value="external_id">Assignee external ID</option>
+                            <option value="name">Assignee name</option>
+                            <option value="alias">Assignee alias</option>
+                            <option value="email">Assignee email</option>
+                            <option value="phone">Assignee phone</option>
+                            <option value="locale">Assignee locale</option>
+                            <option value="time_zone">Assignee time zone</option>
+                            <option value="role">Assignee role</option>
+                            <option value="role_type">Assignee role type</option>
+                            <option value="details">Assignee details</option>
+                            <option value="notes">Assignee notes</option>
+                            <option value="tags">Assignee tags</option>
+                            <option value="active">Assignee active?</option>
+                            <option value="verified">Assignee verified?</option>
+                            <option value="suspended">Assignee suspended?</option>
+                            <option value="created_at">Assignee created at</option>
+                            <option value="updated_at">Assignee updated at</option>
+                            <option value="last_login_at">Assignee last login</option>
+                        </optgroup>
+                        <optgroup label="group">
+                            <option value="id">Group ID</option>
+                            <option value="name">Group name</option>
+                            <option value="created_at">Group created at</option>
+                            <option value="updated_at">Group updated at</option>
+                        </optgroup>
+                        <optgroup label="organization">
+                            <option value="id">Organization ID</option>
+                            <option value="external_id">Organization external ID</option>
+                            <option value="name">Organization name</option>
+                            <option value="details">Organization details</option>
+                            <option value="notes">Organization notes</option>
+                            <option value="tags">Organization tags</option>
+                            <option value="domain_names">Organization domain names</option>
+                            <option value="created_at">Organization created at</option>
+                            <option value="updated_at">Organization updated at</option>
+                        </optgroup>
+                        <optgroup label="brand">
+                            <option value="id">Brand ID</option>
+                            <option value="name">Brand name</option>
+                            <option value="active">Brand active?</option>
+                            <option value="default">Default brand?</option>
+                            <option value="created_at">Brand created at</option>
+                            <option value="updated_at">Brand updated at</option>
+                        </optgroup>
+                        <optgroup label="form">
+                            <option value="id">Form ID</option>
+                            <option value="name">Form Name</option>
+                        </optgroup>
+                        <!--                        <optgroup label="channel">-->
+                        <!--                            <option value=""></option>-->
+                        <!--                        </optgroup>-->
+                        <optgroup label="metric-set">
+                            <option value="id">Metric set ID</option>
+                            <option value="group_stations">Metric Group stations</option>
+                            <option value="assignee_stations">Metric Assignee stations</option>
+                            <option value="reopens">Metric Reopens</option>
+                            <option value="replies">Metric Replies</option>
+
+                            <option value="reply_time_in_minutes_calendar">Metric Reply time in minutes (calendar)
+                            </option>
+                            <option value="reply_time_in_minutes_business">Metric Reply time in minutes (business
+                                hours)
+                            </option>
+
+                            <option value="first_resolution_time_in_minutes_calendar">Metric First resolution time
+                                in minutes (calendar)
+                            </option>
+                            <option value="first_resolution_time_in_minutes_business">Metric First resolution time
+                                in minutes (business hours)
+                            </option>
+
+                            <option value="full_resolution_time_in_minutes_calendar">Metric Full resolution time in
+                                minutes (calendar)
+                            </option>
+                            <option value="full_resolution_time_in_minutes_business">Metric Full resolution time in
+                                minutes (business hours)
+                            </option>
+
+                            <option value="agent_wait_time_in_minutes_calendar">Metric Agent wait time in minutes
+                                (calendar)
+                            </option>
+                            <option value="agent_wait_time_in_minutes_business">Metric Agent wait time in minutes
+                                (business hours)
+                            </option>
+
+                            <option value="requester_wait_time_in_minutes_calendar">Metric Requester wait time in
+                                minutes (calendar)
+                            </option>
+                            <option value="requester_wait_time_in_minutes_business">Metric Requester wait time in
+                                minutes (business hours)
+                            </option>
+
+                            <option value="on_hold_time_in_minutes_calendar">Metric On hold time in minutes
+                                (calendar)
+                            </option>
+                            <option value="on_hold_time_in_minutes_business">Metric On hold time in minutes
+                                (business hours)
+                            </option>
+
+                            <option value="assignee_updated_at">Metric Assignee updated at</option>
+                            <option value="requester_updated_at">Metric Requester updated at</option>
+                            <option value="status_updated_at">Metric Status updated at</option>
+                            <option value="initially_assigned_at">Metric Initially assigned at</option>
+                            <option value="assigned_at">Metric Assigned at</option>
+                            <option value="solved_at">Metric Solved at</option>
+                            <option value="latest_comment_added_at">Metric Latest comment added at</option>
+                        </optgroup>
+                        <optgroup label="custom-fields">
+                            <option value="subject">Subject</option>
+                            <option value="description">Description</option>
+                            <option value="status">Status</option>
+                            <option value="type">Type</option>
+                            <option value="priority">Priority</option>
+                            <option value="group_name">Group</option>
+                            <option value="assignee_name">Assignee</option>
+                            <option value="ticket_status">Ticket status</option>
+                            <option value="topic">Topic</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between" style="margin-left: 65%;position: absolute; bottom: 20px; right:20px;">
+                <div style="gap: 5px;" class="d-flex justify-content-end mb-3">
+                    <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
+                    <button disabled type="button" class="btn btn-secondary mr-2"
+                            style="background-color: #e9ebed; border: none; color: #919191;">Save
+                    </button>
+                    <button type="button" class="btn btn-primary "
+                            style="background-color: #0176b3 ;padding-left: 5px;" id="exportButton_time">Export
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- ticket export time based -->
+        <!-- ---------------------------------- tickets end--------------------------------------- -->
+
+
+        <!-- ---------------------------------- Comments start-------------------------------------- -->
+        <div id="comments" class="container m-3 hidden">
+            <h3 class="mb-4" style="margin-bottom: 10px;">Comment Export</h3>
+            <h5 class="mb-4">Start new export</h5>
+            <div class="mb-3 p-3 border rounded d-flex justify-content-between"
+                 style="height: 120px; margin-top: -10px;">
+                <div>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Comment Based on Time</p>
+                    <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export all users that have been created
+                        or updated within a certain date range.</p>
+                    <p class="fs-6" style="color: #919191; font-style: italic;">High performance, no filtering.</p>
+                </div>
+                <div style="padding-right: 20px;">
+                    <button type="button" class="btn btn-outline-primary" id="continueCommentExport">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="commentExportComponent" class="container mt-3 hidden">
+            <h2>Comment Export</h2>
+            <div>
+                <p class="fw-semibold" style="margin: 0;">Date Range</p>
+                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range
+                    will be exported</p>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="startdate" id="commentstartdate" value="02/02/2024"/>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="enddate" id="commentenddate" value="02/15/2024"/>
+            </div>
+
+
+            <div style="margin-top: 20px;" class="mb-3">
+                <label for="commentTemplateSelect" style="font-weight: 600;" class="form-label">Select Export
+                    Format</label>
+                <p style="font-size: 14px; color:#919191; margin-top: -10px;" class="form-label">Select an export
+                    template</p>
+                <select style="width: 400px;" class="form-select" id="commentTemplateSelect"
+                        onchange="checkCommentSelections()">
+                    <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                    <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                    <option value="JSON">JSON</option>
+                    <option value="XML">XML</option>
+                </select>
+                <small id="commentSelectMessage"
+                           style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;"></small>
+            </div>
+            <hr/>
+
+            <div style="height: 300px; overflow: auto; margin-bottom:20px;" id="commentTablePlaceholder" class="d-none">
+                <table class="table" id="commentFieldMappingTable">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px;"></th>
+                        <th>Field</th>
+                        <th>Group</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="mb-3">
+                    <select style="width: 400px; margin-left: 40px;" class="form-select" id="commentAddFieldSelect"
+                            onchange="addCommentFieldToTable()">
+                        <option value="">Add field</option>
+                        <optgroup label="Comment">
+                            <option class="c-comment" value="id">Id</option>
+                            <!--                    <option class="c-comment" value="ticket_id">Ticket Id</option>-->
+                            <option class="c-comment" value="author_id">Author Id</option>
+                            <option class="c-comment" value="body">Comment text</option>
+                            <option class="c-comment" value="html_body">Comment html</option>
+                            <option class="c-comment" value="public">Is Public?</option>
+                            <option class="c-comment" value="attachments">Attachments</option>
+                            <option class="c-comment" value="attachments">Attachments URL's</option>
+                            <option class="c-comment" value="created_at">Created at</option>
+                        </optgroup>
+                        <!--                <optgroup label="Channel">-->
+                        <!--                    <option value="">Channel</option>-->
+                        <!--                    <option value="">From name</option>-->
+                        <!--                    <option value="">From email address</option>-->
+                        <!--                    <option value="">original recipients</option>-->
+                        <!--                    <option value="">From phone Number</option>-->
+                        <!--                    <option value="">From phone Number(formatted)</option>-->
+                        <!--                    <option value="">From username</option>-->
+                        <!--                    <option value="">From profile URL</option>-->
+                        <!--                    <option value="">From Facebook ID</option>-->
+                        <!--                    <option value="">To name</option>-->
+                        <!--                    <option value="">To email address</option>-->
+                        <!--                    <option value="">Phone number</option>-->
+                        <!--                    <option value="">Phone number(Formatted)</option>-->
+                        <!--                    <option value="">To username</option>-->
+                        <!--                    <option value="">To profile URL</option>-->
+                        <!--                    <option value="">To facebook ID</option>-->
+                        <!--                </optgroup>-->
+
+                        <optgroup label="Audit">
+                            <option class="a-audit" value="id">Audit ID</option>
+                            <option class="a-audit" value="author_id">Updater ID</option>
+                            <option class="a-audit" value="created_at">Timestamp</option>
+                            <option class="a-audit" value="channel">Via</option>
+                            <option class="a-audit" value="client">client</option>
+                            <option class="a-audit" value="location">Location</option>
+                            <option class="a-audit" value="latitude">Latitude</option>
+                            <option class="a-audit" value="longitude">Longitude</option>
+                            <option class="a-audit" value="ip_address">IP Address</option>
+                            <option class="a-audit" value="ticket_id">Message ID</option>
+                            <option class="a-audit" value="address">Raw email ID</option>
+                            <option class="a-audit" value="json_address">Json email ID</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between" style="margin-left: 65%; position: absolute; bottom: 20px; right:20px;">
+                <div class="d-flex" style="gap : 5px;">
+                    <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
+                    <button disabled type="button" class="btn btn-secondary mr-2"
+                            style="background-color: #e9ebed; border: none; color: #919191;">Save
+                    </button>
+                    <button type="button" class="btn btn-primary " style="background-color: #0176b3;"
+                            id="comment_export_Button">Export
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- ---------------------------------- Comments end --------------------------------------- -->
+
+        <!-- --------------------------------------- Users start--------------------------------------- -->
+        <div id="users" class="container m-3 hidden">
+            <h3 class="mb-4" style="margin-bottom: 10px;">User Export</h3>
+
+            <h5 class="mb-4">Start new export</h5>
+            <div class="mb-3 p-3 border rounded d-flex justify-content-between" style="height: 120px;">
+                <div>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">User Based on Search</p>
+                    <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export the results of any search
+                        query.</p>
+                    <p class="fs-6" style="color: #919191; font-style: italic;">Native search syntax and options,
+                        average performance</p>
+                </div>
+                <div style="padding-right: 20px;">
+                    <button type="button" class="btn btn-outline-primary" id="continueUserExport">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Export component -->
+        <div id="userExportComponent" class="container mt-3 hidden">
+            <h2>User Export</h2>
+
+            <div style="margin-top: 20px;" class="mb-3">
+                <p style="font-weight: 600; margin: 0;">Search query</p>
+                <p style="font-size: 14px; color: #919191; margin:0">Enter your search query. <span
+                        style="color: rgb(33, 136, 220);">Show search tips.</span></p>
+                <input id="usersquery"
+                       style="display: block; width: 60%; border-radius: 5px ;border: 1px solid rgb(33, 136, 220);height: 30px;padding: 5px;"/>
+                <!--                <small id="organizationViewSelectMessage"-->
+                <!--                       style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;">This view contains 2-->
+                <!--                    organizations. false</small>-->
+            </div>
+
+            <hr/>
+
+            <!-- Select a template dropdown -->
+            <div style="margin-top: 20px;" class="mb-3">
+                <label for="userTemplateSelect" style="font-weight: 600;" class="form-label">Select Export
+                    Format</label>
+                <p style="font-size: 14px; color:#919191; margin-top: -10px;" class="form-label">Select an export
+                    template</p>
+                <select style="width: 400px;" class="form-select" id="userTemplateSelect"
+                        onchange="checkUserSelections()">
+                    <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                    <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                    <option value="JSON">JSON</option>
+                    <option value="XML">XML</option>
+                    <!-- Add other options here -->
+                </select>
+                <small id="userSelectMessage"
+                           style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;"></small>
+            </div>
+
+            <hr/>
+
+            <!-- Table placeholder -->
+            <div style="height: 300px; overflow: auto; margin-bottom:20px;" id="userTablePlaceholder" class="d-none">
+                <!-- Table for field mapping -->
+                <table class="table" id="userFieldMappingTable">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px;"></th>
+                        <th>Field</th>
+                        <th>Group</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Table rows will be added here -->
+                    </tbody>
+                </table>
+                <!-- Add field dropdown -->
+                <div class="mb-3">
+                    <select style="width: 400px; margin-left: 40px;" class="form-select" id="userAddFieldSelect"
+                            onchange="addUserFieldToTable()">
+                        <option value="">Add field</option>
+                        <optgroup label="User Information">
+                            <option class="u-info" value="id">User ID</option>
+                            <option class="u-info" value="external_id">External ID</option>
+                            <option class="u-info" value="name">Name</option>
+                            <option class="u-info" value="alias">Alias</option>
+                            <option class="u-info" value="email">Email Address</option>
+                            <option class="u-info" value="phone">Phone numbers</option>
+                            <option class="u-info" value="details">Details</option>
+                            <option class="u-info" value="notes">Notes</option>
+                            <option class="u-info" value="tags">Tags</option>
+                            <option class="u-info" value="signature">Signature</option>
+                            <option class="u-info" value="role_type">Role type</option>
+                            <option class="u-info" value="verified">Verified?</option>
+                            <option class="u-info" value="suspended">Suspended?</option>
+                            <!--                    <option class="u-info" value="">Not deleted?</option>-->
+                            <!--                    <option class="u-info" value="">Chat only agent?</option>-->
+                            <option class="u-info" value="moderator">Moderator</option>
+                            <option class="u-info" value="only_private_comments">Only private comments?</option>
+                            <option class="u-info" value="restricted_agent">Restricted agent?</option>
+                            <option class="u-info" value="ticket_restriction">Ticket restriction</option>
+                            <!--                    <option class="u-info" value="">Open ticket count</option>-->
+                            <option class="u-info" value="created_at">Created at</option>
+                            <option class="u-info" value="updated_at">Updated at</option>
+                            <option class="u-info" value="last_login_at">Last login at</option>
+                            <option class="u-info" value="shared_phone_number">Shared phone number?</option>
+                        </optgroup>
+                        <optgroup label="Locale">
+                            <option class="u-info" value="locale">Locale</option>
+                        </optgroup>
+                        <optgroup label="Timezone">
+                            <option class="u-info" value="time_zone">Timezone</option>
+                        </optgroup>
+<!--                        <optgroup label="Organization">-->
+<!--                            <option class="u-o-info" value="id">Organization ID</option>-->
+<!--                            <option class="u-o-info" value="external_id">Organization external ID</option>-->
+<!--                            <option class="u-o-info" value="name">Organization name</option>-->
+<!--                            <option class="u-o-info" value="details">Organization details</option>-->
+<!--                            <option class="u-o-info" value="notes">Organization notes</option>-->
+<!--                            <option class="u-o-info" value="tags">Organization tags</option>-->
+<!--                            <option class="u-o-info" value="domain_names">Organization domain names</option>-->
+<!--                            <option class="u-o-info" value="created_at">Organization created at</option>-->
+<!--                            <option class="u-o-info" value="updated_at">Organization updated at</option>-->
+<!--                        </optgroup>-->
+<!--                        <optgroup label="Group">-->
+<!--                            <option class="u-g-info" value="id">Group ID</option>-->
+<!--                            <option class="u-g-info" value="name">Group name</option>-->
+<!--                            <option class="u-g-info" value="details">Group description</option>-->
+<!--                            <option class="u-g-info" value="created_at">Group created at</option>-->
+<!--                            <option class="u-g-info" value="updated_at">Group updated at</option>-->
+<!--                        </optgroup>-->
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between" style="margin-left: 65%; position: absolute; bottom: 20px; right:20px;">
+                <!-- Button Group at the bottom -->
+                <div style="gap: 5px;" class="d-flex justify-content-end mb-3">
+                    <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
+                    <button disabled type="button" class="btn btn-secondary mr-2"
+                            style="background-color: #e9ebed; border: none; color: #919191;">Save
+                    </button>
+                    <button type="button" class="btn btn-primary" style="background-color: #0176b3 ;"
+                            id="search_user_export_Button">Export
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- --------------------------------------- Users end--------------------------------------- -->
+
+
+        <!-- ----------------------------------- Organizations start---------------------------------- -->
+        <!-- Organizations export search based start-->
+        <div id="organizations" class="container m-3 hidden">
+            <h3 class="mb-4" style="margin-bottom: 10px;">Organization Export</h3>
+            <h5 class="mb-4">Start new export</h5>
+
+            <div class="mb-3 p-3 border rounded  d-flex justify-content-between" style="height: 120px;">
+                <div>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Organization Based on Search</p>
+                    <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export the results of any search
+                        query.</p>
+                    <p class="fs-6" style="color: #919191; font-style: italic;">Native search syntax and options,
+                        average performance</p>
+                </div>
+                <div style="padding-right: 20px;">
+                    <button type="button" class="btn btn-outline-primary" id="continueOrgExport"
+                            style="color: #007bff; border-color: #007bff; background-color: transparent;"
+                            onmouseout="this.style.color='#007bff'; this.style.borderColor='#007bff'; this.style.backgroundColor='transparent';">
+                        Continue
+                    </button>
+                </div>
+            </div>
+            <div class="mb-3 p-3 border rounded d-flex justify-content-between"
+                 style="height: 120px; margin-top: -10px;">
+                <div>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Organization Based on Time</p>
+                    <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export all users that have been created
+                        or updated within a certain date range.</p>
+                    <p class="fs-6" style="color: #919191; font-style: italic;">High performance, no filtering.</p>
+                </div>
+                <div style="padding-right: 20px;">
+                    <button type="button" class="btn btn-outline-primary" id="continueOrgExportTime"
+                            style="color: #007bff; border-color: #007bff; background-color: transparent;"
+                            onmouseout="this.style.color='#007bff'; this.style.borderColor='#007bff'; this.style.backgroundColor='transparent';">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organization export component -->
+        <div id="organizationExportComponent" class="container mt-3 hidden">
+            <h2>Organization Export</h2>
+
+            <div id="organizationTableContent" style="height: 560px; width: 85%;">
+                <!-- Select a view dropdown -->
+                <div style="margin-top: 20px;" class="mb-3">
+                    <p style="font-weight: 600;">Search query</p>
+                    <p style="font-size: 14px; color: #919191; margin-top: -10px;">Enter your search query. <span
+                            style="color: rgb(33, 136, 220);">Show search tips.</span></p>
+                    <input id="OrgQuery"
+                           style="display: block; width: 60%; border-radius: 5px ;border: 1px solid rgb(33, 136, 220);height: 30px;padding: 5px;"/>
+                    <small id="organizationViewSelectMessage"
+                           style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;">This view contains
+                        2 organizations. false</small>
+                </div>
+
+                <hr/>
+
+                <!-- Select a template dropdown -->
+                <div style="margin-top: 20px;" class="mb-3">
+                    <label for="organizationTemplateSelect" class="form-label" style="font-weight: 600;">Select
+                        Export Format</label>
+                    <!-- <label for="organizationTemplateSelect" class="form-label" style="font-size: 14px; color:#919191; margin-top: -10px;">Select an export template</label> -->
+                    <select style="width: 400px;" class="form-select" id="organizationTemplateSelect"
+                            onchange="checkOrganizationSelections()">
+                        <option value="" selected></option>
+                        <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                        <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                        <option value="JSON">JSON</option>
+                        <option value="XML">XML</option>
+                        <!-- Add other options here -->
+                    </select>
+                    <small id="searchOrgSelectMessage"
+                           style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;"></small>
+                </div>
+
+                <hr/>
+
+                <!-- Table placeholder -->
+                <div style="height: 300px; overflow: auto; margin-bottom:20px;" id="organizationTablePlaceholder" class="d-none">
+                    <!-- Table for field mapping -->
+                    <table class="table" id="organizationFieldMappingTable">
+                        <thead>
+                        <tr>
+                            <th style="width: 20px;"></th>
+                            <th>Field</th>
+                            <th>Group</th>
+                            <th>Type</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Table rows will be added here -->
+                        </tbody>
+                    </table>
+
+                    <!-- Add field dropdown -->
+                    <div class="mb-3">
+                        <select style="width: 400px; margin-left: 40px;" class="form-select"
+                                id="organizationAddFieldSelect" onchange="addOrganizationFieldToTable()">
+                            <option value="">Add field</option>
+                            <optgroup label="Organization Information">
+                                <option class="o-info" value="id">Organization ID</option>
+                                <option class="o-info" value="external_id">External ID</option>
+                                <option class="o-info" value="name">Name</option>
+                                <option class="o-info" value="details">Details</option>
+                                <option class="o-info" value="notes">Notes</option>
+                                <option class="o-info" value="domain_names">Domains names</option>
+                                <option class="o-info" value="group_id">Group ID</option>
+                                <option class="o-info" value="tags">Tags</option>
+                                <option class="o-info" value="created_at">Created at</option>
+                                <option class="o-info" value="updated_at">Updated at</option>
+                                <option class="o-info" value="deleted_at">Deleted at</option>
+                            </optgroup>
+                            <!--                    <optgroup label="Abilities">-->
+                            <!--                        <option value="">Can access tickets?</option>-->
+                            <!--                        <option value="">Can edit users?</option>-->
+                            <!--                    </optgroup>-->
+                            <optgroup label="Miscellaneous">
+                                <option class="o-info" value="shared_comments">Shared comments?</option>
+                                <option class="o-info" value="shared_tickets">Shared tickets?</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="fixed-bottom">
+                <!-- Button Group at the bottom -->
+                <div style="gap: 5px; position: fixed; bottom: 20px;right: 20px;"
+                     class="d-flex justify-content-end mb-3">
+                    <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
+                    <button disabled type="button" class="btn btn-secondary mr-2"
+                            style="background-color: #e9ebed; border: none; color: #919191;">Save
+                    </button>
+                    <button type="button" class="btn btn-primary" style="background-color: #0176b3 ;"
+                            id="search_org_export_Button">Export
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Organizations export search based end-->
+
+        <!-- Organizations export time based start-->
+        <div id="organizationExportComponentTime" class="container mt-3 hidden">
+            <h2>Organization Export</h2>
+            <!-- <div>
+                <p class="fw-semibold" style="margin: 0;">Date Range</p>
+                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range will be exported</p>
+                <input type="text" style="width: 40%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"name="daterange" value="01/01/2024 - 01/15/2024" />
+            </div> -->
+            <div>
+                <p class="fw-semibold" style="margin: 0;">Date Range</p>
+                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range
+                    will be exported</p>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="startdate" id="o_startdate" value="02/15/2024"/>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="enddate" id="o_enddate" value="02/25/2024"/>
+            </div>
+            <div style="margin-top: 20px;" class="mb-3">
+                <label for="orgtemplateSelect_time" style="font-weight: 600;" class="form-label">Select Export Format
+                </label>
+                <p style="font-size: 14px; color:#919191; margin-top: -10px;" class="form-label">Select an export
+                    template</p>
+                <select style="width: 400px;" class="form-select" id="orgtemplateSelect_time"
+                        onchange="checkOrganizationSelections_time()">
+                    <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                    <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                    <option value="JSON">JSON</option>
+                    <option value="XML">XML</option>
+                </select>
+                <small id="timeOrgSelectMessage"
+                           style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;"></small>
+            </div>
+            <hr/>
+
+            <div style="height: 300px; overflow: auto; margin-bottom:20px;" id="OrgTimeTablePlaceholder" class="d-none">
+                <table class="table" id="organizationFieldMappingTable_time">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px;"></th>
+                        <th>Field</th>
+                        <th>Group</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="mb-3">
+                    <select style="width: 400px; margin-left: 40px;" class="form-select"
+                            id="organizationAddFieldSelect_time" onchange="addOrganizationFieldToTable_time()">
+                        <option value="">Add field</option>
+                        <optgroup label="Organization Information">
+                            <option class="o-info" value="id">Organization ID</option>
+                            <option class="o-info" value="external_id">External ID</option>
+                            <option class="o-info" value="name">Name</option>
+                            <option class="o-info" value="details">Details</option>
+                            <option class="o-info" value="notes">Notes</option>
+                            <option class="o-info" value="domain_names">Domains names</option>
+                            <option class="o-info" value="group_id">Group ID</option>
+                            <option class="o-info" value="tags">Tags</option>
+                            <option class="o-info" value="created_at">Created at</option>
+                            <option class="o-info" value="updated_at">Updated at</option>
+                            <option class="o-info" value="deleted_at">Deleted at</option>
+                        </optgroup>
+                        <!--                    <optgroup label="Abilities">-->
+                        <!--                        <option value="">Can access tickets?</option>-->
+                        <!--                        <option value="">Can edit users?</option>-->
+                        <!--                    </optgroup>-->
+                        <optgroup label="Miscellaneous">
+                            <option class="o-info" value="shared_comments">Shared comments?</option>
+                            <option class="o-info" value="shared_tickets">Shared tickets?</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between" style="margin-left: 65%;position: absolute; bottom: 20px; right: 20px;">
+                <div style="gap: 5px;" class="d-flex justify-content-end mb-3">
+                    <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
+                    <button disabled type="button" class="btn btn-secondary mr-2"
+                            style="background-color: #e9ebed; border: none; color: #919191;">Save
+                    </button>
+                    <button type="button" class="btn btn-primary " style="background-color: #0176b3 ;padding-left: 5px;"
+                            id="time_org_export_Button">Export
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <!-- Organizations export time based end-->
+
+        <!-- ----------------------------------- Organizations end---------------------------------- -->
+
+
+        <!-- ----------------------------- Attachments starts  ------------------------------------ -->
+        <div id="attachments" class="container m-3 hidden">
+            <h3 class="mb-4" style="margin-bottom: 10px;">Attachment Export</h3>
+
+            <h5 class="mb-4">Start new export</h5>
+
+            <div class="mb-3 p-3 border rounded d-flex justify-content-between"
+                 style="height: 120px; margin-top: -10px;">
+                <div>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Attachment Based on Time</p>
+                    <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export all users that have been created
+                        or updated within a certain date range.</p>
+                    <p class="fs-6" style="color: #919191; font-style: italic;">High performance, no filtering.</p>
+                </div>
+                <div style="padding-right: 20px;">
+                    <button type="button" class="btn btn-outline-primary" id="continueAttachmentExport">
+                        Continue
+                    </button>
+                </div>
+            </div>
+
+            <!-- Attachment Export Component -->
+
+        </div>
+        <div id="attachmentExportComponent" class="container mt-3 hidden">
+            <h2>Attachment Export</h2>
+
+            <!--            <div style="margin-top: 20px;" class="mb-3">-->
+            <!--                <label for="attachmentViewSelect" class="form-label" style="font-weight: 600;">Select a view</label>-->
+            <!--                <p style="font-size: 14px; color: #919191; margin-top: -10px;" class="form-label">Select a view that-->
+            <!--                    contains attachments you would like to export</p>-->
+
+            <!--                <select style="width: 400px;" class="form-select" id="attachmentViewSelect"-->
+            <!--                        onchange="checkAttachmentSelections()">-->
+            <!--                    <option value="All attachments">All attachments</option>-->
+            <!--                    <option value="Resolved attachments">Resolved attachments</option>-->
+            <!--                    <option value="Pending attachments">Pending attachments</option>-->
+            <!--                </select>-->
+            <!--                &lt;!&ndash;        <small id="attachmentViewSelectMessage" style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;">This view contains 2 attachments.</small>&ndash;&gt;-->
+            <!--            </div>-->
+            <!--            <hr/>-->
+            <!-- <div>
+                <p class="fw-semibold" style="margin: 0;">Date Range</p>
+                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range will be exported</p>
+                <input type="text" style="width: 40%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"name="daterange" value="01/01/2024 - 01/15/2024" />
+            </div> -->
+            <div>
+                <p class="fw-semibold" style="margin: 0;">Date Range</p>
+                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range
+                    will be exported</p>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="startdate" id="attachstartdate" value="02/02/2024"/>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="enddate" id="attachenddate" value="02/15/2024"/>
+            </div>
+            <div style="margin-top: 20px;" class="mb-3">
+                <label for="attachmentTemplateSelect" style="font-weight: 600;" class="form-label">Select Export Format
+                    </label>
+                <p style="font-size: 14px; color:#919191; margin-top: -10px;" class="form-label">Select an export
+                    template</p>
+                <select style="width: 400px;" class="form-select" id="attachmentTemplateSelect"
+                        onchange="checkAttachmentSelections()">
+                    <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                    <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                    <option value="JSON">JSON</option>
+                    <option value="XML">XML</option>
+                </select>
+                <small id="attachSelectMessage"
+                           style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;"></small>
+            </div>
+            <hr/>
+
+            <div style="height: 300px; overflow: auto; margin-bottom:20px;" id="attachmentTablePlaceholder" class="d-none">
+                <table class="table" id="attachmentFieldMappingTable">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px;"></th>
+                        <th>Field</th>
+                        <th>Group</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="mb-3">
+                    <select style="width: 400px; margin-left: 40px;" class="form-select" id="attachmentAddFieldSelect"
+                            onchange="addAttachmentFieldToTable()">
+                        <option value="">Add field</option>
+                        <optgroup label="Attachment">
+                            <option class="a-attachment" value="id">Attachment Id</option>
+                            <option class="a-attachment" value="file_name">File Name</option>
+                            <option class="a-attachment" value="size">File Size</option>
+                            <option class="a-attachment" value="height">File height</option>
+                            <option class="a-attachment" value="width">File width</option>
+                            <option class="a-attachment" value="content_type">Content type</option>
+                            <option class="a-attachment" value=inline"">Inline?</option>
+                            <option class="a-attachment" value="deleted">Deleted?</option>
+                            <option class="a-attachment" value="malware_access_override">Malware access?</option>
+                            <option class="a-attachment" value="thumbnails">Thumbnails</option>
+                        </optgroup>
+                        <!--                <optgroup label="User">-->
+                        <!--                    <option value="User Id">User Id</option>-->
+                        <!--                    <option value="User Name">User Name</option>-->
+                        <!--                    <option value="User Email">User Email</option>-->
+                        <!--                </optgroup>-->
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between" style="margin-left: 65%; position: absolute; bottom: 20px; right:20px;">
+                <div style="gap: 5px;" class="d-flex justify-content-end mb-3">
+                    <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
+                    <button disabled type="button" class="btn btn-secondary mr-2"
+                            style="background-color: #e9ebed; border: none; color: #919191;">Save
+                    </button>
+                    <button type="button" class="btn btn-primary " style="background-color: #0176b3 ;padding-left: 5px;"
+                            id="attachment_export_Button">Export
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- ----------------------------- Attachments end  ------------------------------------ -->
+
+
+        <!-- ---------------------------------------Calls Starts ---------------------------------------- -->
+
+        <div id="calls" class="container m-3 hidden">
+            <h3 class="mb-4" style="margin-bottom: 10px;">Calls Export</h3>
+
+            <h5 class="mb-4">Start new export</h5>
+
+            <div class="mb-3 p-3 border rounded d-flex justify-content-between"
+                 style="height: 120px; margin-top: -10px;">
+                <div>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Time Based</p>
+                    <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export all users that have been created
+                        or updated within a certain date range.</p>
+                    <p class="fs-6" style="color: #919191; font-style: italic;">High performance, no filtering.</p>
+                </div>
+                <div style="padding-right: 20px;">
+                    <button type="button" class="btn btn-outline-primary" id="continueCallsExport">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="callsExportComponent" class="container mt-3 hidden">
+            <h2>Calls Export</h2>
+
+            <!-- Content for Calls Export -->
+            <div class="mb-3">
+                <label for="callViewSelect" class="form-label" style="font-weight: 600;">Select a view</label>
+                <p style="font-size: 14px; color: #919191; margin-top: -10px;" class="form-label">Select a view that
+                    contains calls you would like to export</p>
+
+                <select style="width: 400px;" class="form-select" id="callViewSelect" onchange="checkCallSelections()">
+                    <option value="All calls">All calls</option>
+                    <option value="Incoming calls">Incoming calls</option>
+                    <option value="Outgoing calls">Outgoing calls</option>
+                </select>
+                <small id="callViewSelectMessage"
+                       style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;">This view contains 10
+                    calls.</small>
+            </div>
+            <hr/>
+            <!-- <div>
+                <p class="fw-semibold" style="margin: 0;">Date Range</p>
+                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range will be exported</p>
+                <input type="text" style="width: 40%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"name="daterange" value="01/01/2024 - 01/15/2024" />
+            </div> -->
+            <div>
+                <p class="fw-semibold" style="margin: 0;">Date Range</p>
+                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range
+                    will be exported</p>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="startdate" value="02/02/2024"/>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="enddate" value="02/15/2024"/>
+            </div>
+
+            <div class="mb-3">
+                <label for="callTemplateSelect" style="font-weight: 600;" class="form-label">Select Export Format</label>
+                <p style="font-size: 14px; color:#919191; margin-top: -10px;" class="form-label">Select an export
+                    template</p>
+                <select style="width: 400px;" class="form-select" id="callTemplateSelect"
+                        onchange="checkCallSelections()">
+                    <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                    <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                    <option value="JSON">JSON</option>
+                    <option value="XML">XML</option>
+                </select>
+            </div>
+            <hr/>
+
+            <div style="height: 300px; overflow: auto; margin-bottom:20px;" id="callTablePlaceholder" class="d-none">
+                <table class="table" id="callFieldMappingTable">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px;"></th>
+                        <th>Field</th>
+                        <th>Group</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Table rows for call fields will be dynamically added here -->
+                    </tbody>
+                </table>
+                <div class="mb-3">
+                    <select style="width: 400px; margin-left: 40px;" class="form-select" id="callAddFieldSelect"
+                            onchange="addCallFieldToTable()">
+                        <option value="">Add field</option>
+                        <optgroup label="Call">
+                            <option value="Id">Id</option>
+                            <option value="Caller">Caller</option>
+                            <option value="Receiver">Receiver</option>
+                        </optgroup>
+                        <optgroup label="Details">
+                            <option value="Duration">Duration</option>
+                            <option value="Timestamp">Timestamp</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between" style="margin-left: 65%;position: absolute; bottom: 10px;">
+                <hr/>
+                <div>
+                </div>
+                <div class="d-flex">
+                    <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
+                    <button disabled type="button" class="btn btn-secondary mr-2"
+                            style="background-color: #e9ebed; border: none; color: #919191;">Save
+                    </button>
+                    <button type="button" class="btn btn-primary "
+                            style="background-color: #0176b3 ;padding-left: 5px;">Export
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ---------------------------------------Calls ends here---------------------------------------- -->
+
+        <!-- ---------------------------------------Legs Starts here---------------------------------------- -->
+
+        <div id="legs" class="container m-3 hidden">
+            <h3 class="mb-4" style="margin-bottom: 10px;">Legs Export</h3>
+
+            <h5 class="mb-4">Start new export</h5>
+
+            <div class="mb-3 p-3 border rounded d-flex justify-content-between"
+                 style="height: 120px; margin-top: -10px;">
+                <div>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Time Based</p>
+                    <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export all users that have been created
+                        or updated within a certain date range.</p>
+                    <p class="fs-6" style="color: #919191; font-style: italic;">High performance, no filtering.</p>
+                </div>
+                <div style="padding-right: 20px;">
+                    <button type="button" class="btn btn-outline-primary" id="continueLegsExport">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="legsExportComponent" class="container mt-3 hidden">
+            <h2>Legs Export</h2>
+
+            <!-- Add legs export content here -->
+
+            <div style="margin-top: 20px;" class="mb-3">
+                <label for="legsViewSelect" class="form-label" style="font-weight: 600;">Select a view</label>
+                <p style="font-size: 14px; color: #919191; margin-top: -10px;" class="form-label">Select a view that
+                    contains legs you would like to export</p>
+
+                <select style="width: 400px;" class="form-select" id="legsViewSelect" onchange="checkLegsSelections()">
+                    <option value="All legs">All legs</option>
+                    <option value="Completed legs">Completed legs</option>
+                    <option value="Pending legs">Pending legs</option>
+                </select>
+                <small id="legsViewSelectMessage"
+                       style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;">This view contains 5
+                    legs.</small>
+            </div>
+            <hr/>
+
+            <!-- <div>
+                <p class="fw-semibold" style="margin: 0;">Date Range</p>
+                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range will be exported</p>
+                <input type="text" style="width: 40%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"name="daterange" value="01/01/2024 - 01/15/2024" />
+            </div> -->
+            <div>
+                <p class="fw-semibold" style="margin: 0;">Date Range</p>
+                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range
+                    will be exported</p>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="startdate" value="02/02/2024"/>
+                <input type="text"
+                       style="width: 25%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"
+                       name="enddate" value="02/15/2024"/>
+            </div>
+
+            <div style="margin-top: 20px;" class="mb-3">
+                <label for="legsTemplateSelect" style="font-weight: 600;" class="form-label">Select Export Format</label>
+                <p style="font-size: 14px; color:#919191; margin-top: -10px;" class="form-label">Select an export
+                    template</p>
+                <select style="width: 400px;" class="form-select" id="legsTemplateSelect"
+                        onchange="checkLegsSelections()">
+                    <option value="CSV1">CSV UTF-8 (comma delimited)</option>
+                    <option value="CSV2">CSV UTF-8 (semicolon delimited)</option>
+                    <option value="JSON">JSON</option>
+                    <option value="XML">XML</option>
+                </select>
+            </div>
+            <hr/>
+
+            <div style="height: 300px; overflow: auto; margin-bottom:20px;" id="legsTablePlaceholder" class="d-none">
+                <table class="table" id="legsFieldMappingTable">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px;"></th>
+                        <th>Field</th>
+                        <th>Group</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Table rows for legs fields will be dynamically added here -->
+                    </tbody>
+                </table>
+                <div class="mb-3">
+                    <select style="width: 400px; margin-left: 40px;" class="form-select" id="legsAddFieldSelect"
+                            onchange="addLegsFieldToTable()">
+                        <option value="">Add field</option>
+                        <optgroup label="Leg">
+                            <option value="Id">Id</option>
+                            <option value="Source">Source</option>
+                            <option value="Destination">Destination</option>
+                        </optgroup>
+                        <optgroup label="Details">
+                            <option value="Distance">Distance</option>
+                            <option value="Duration">Duration</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between" style="margin-left: 65%;position: absolute; bottom: 10px;">
+                <hr/>
+                <div>
+                </div>
+                <div class="d-flex">
+                    <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
+                    <button disabled type="button" class="btn btn-secondary mr-2"
+                            style="background-color: #e9ebed; border: none; color: #919191;">Save
+                    </button>
+                    <button type="button" class="btn btn-primary "
+                            style="background-color: #0176b3 ;padding-left: 5px;">Export
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ---------------------------------------Legs ends here---------------------------------------- -->
+
+
+        <!-- ---------------------------------------Saved_exports Starts here---------------------------------------- -->
+        <div id="saved_exports" class="container m-3 hidden">
+            <div>
+                <h3>Saved exports</h3>
+                <p>Here you can manage and load your saved exports</p>
+            </div>
+
+            <div style="margin-top: 80px;">
+                <table class="table" id="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Description<i class="bi bi-chevron-expand"></i></th>
+                        <th scope="col">Type<i class="bi bi-chevron-expand"></i></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Add you table body content here -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <!-- Saved_exports ends here---------------------------------------- -->
+
+
+        <!-- Subscription Component -->
+        <div id="subscription" class="container m-3 hidden">
+            <h2 class="mb-4">Subscription</h2>
+            <div class="d-flex justify-content-sm-between align-item-center " style="gap: 5px;">
+                <!-- Free Plan -->
+                <div class="col-md-3" style="height: 420px;">
+                    <div id="freePlan" class="card h-100 plan-card"
+                         style="border-radius: 0;border: none; background-color: #f7f7f7;margin-inline: 2px;">
+                        <p class="text-light"
+                           style="font-size: 10px; margin:auto; padding: 4px; margin-top: -10px; background-color: #2995a8; width: max-content; display: none;">
+                            Current Plan</p>
+                        <div class="card-body" style="color: #17494d;">
+                            <h5>Free</h5>
+                            <ul style="font-size: 14px;font-weight: 500;">
+                                <li>Export tickets by view</li>
+                                <li>Select up to 12 fields</li>
+                                <li>Export using 2 different CSV formats</li>
+                            </ul>
+                            <div class="d-grid gap-2" style="margin-top: 100px;">
+                                <button class="btn" style="background-color:
+                                        #17494d; color: #e9ecef; width: 150px;border-radius: 0; "><a href="https://bluerockapps.co/" target="_blank">Talk to Sales</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Silver Plan -->
+                <div class="col-md-3">
+                    <div id="professionalPlan" class="card h-100 plan-card"
+                         style="border-radius: 0;border: none; background-color: #f7f7f7;margin-inline: 2px;">
+                        <p class="text-light"
+                           style="font-size: 10px; margin:auto; padding: 4px; margin-top: -10px; background-color: #2995a8; width: max-content; display: none;">
+                            Current Plan</p>
+                        <div class="card-body" style="color: #17494d;">
+                            <div>
+                                <h5 style="margin-bottom: 0px;">Silver</h5>
+                                <p style="font-style: italic;font-size: 14px;">Free trial for 7 days then $69.00 per month</p>
+                            </div>
+                            <ul style="font-size: 14px;font-weight: 500;">
+                                <li>Export tickets</li>
+                                <li>Export organizations</li>
+                                <li>Export users</li>
+                                <li>Save & load export configurations</li>
+                                <li>Export using CSV, JSON and XML formats</li>
+                            </ul>
+                            <div class="d-grid gap-2" style="margin-top: 40px;">
+                                <button class="btn" style="background-color:
+                   #17494d; color: #e9ecef; width: 150px;border-radius: 0;"><a href="https://buy.stripe.com/test_eVa9Do3XC54E1z2dQR" target="_blank">Talk to Sales</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gold Plan -->
+                <div class="col-md-3 g-2">
+                    <div id="enterprisePlan" class="card h-100 plan-card"
+                         style="border: none;background-color: '';border-radius: 0;margin-inline: 2px;">
+                        <p class="text-light"
+                           style="font-size: 10px; margin:auto; padding: 4px; margin-top: -10px; background-color: #2995a8; width: max-content; display: none;">
+                            Current Plan</p>
+                        <div class="card-body" style="color: #17494d; padding-inline: 10px; ">
+                            <div>
+                                <h5 style="margin-bottom: 0px;">Gold</h5>
+                                <p style="font-style: italic;font-size: 14px;">Free trial for 7 days then $169.00 per month</p>
+                            </div>
+                            <ul style="font-size: 14px;font-weight: 500;">
+                                <li>Export tickets</li>
+                                <li>Export organizations</li>
+                                <li>Export users</li>
+                                <li>Export comments</li>
+                                <li>Export attachments</li>
+                                <li>Save & load export configurations</li>
+                                <li>Export using CSV, JSON and XML formats</li>
+                                <li>Create your own export templates</li>
+                            </ul>
+                            <div class="d-grid gap-2">
+                                <button class="btn"
+                                        style="background-color:#17494d; color: #e9ecef; width: 150px;border-radius: 0;">
+                                    <a href="https://buy.stripe.com/test_3csdTE65K8gQa5yfYY" target="_blank">Talk to Sales</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <!-- Suite Bottom Section -->
+            <div class="d-flex justify-content-sm-between mt-4" style="background-color:
+  #17494d; height: 80px;margin-top: 20px;">
+                <div class="text-light" style="margin: 20px;">
+                    <p class="card-text" style="font-size: 18px;margin-bottom: 0px;">Suite - It gets even more
+                        powerful</p>
+                    <p class="card-text" style="font-size: 12px;margin-top: 0px;font-style: italic;">Suite - It gets
+                        even more powerful</p>
+                </div>
+                <div class=" justify-content-md-center" style="margin: 10px;">
+                    <button class="btn btn-outline-light" type="button" style="border-radius: 0;"><a href="https://bluerockapps.co/" target="_blank">Talk to Sales</a></button>
+                </div>
+            </div>
+
+        </div>
+        <!-- End of Subscription Component -->
+
+
+        <!-- Settings Component -->
+        <div id="settings" class="container mt-3 hidden" style="width:100%;">
+            <div style="height: 600px; width: 100%;">
+                <div style="width: 480px;font-size: 14px;">
+                    <h2>Settings</h2>
+                    <div>
+                        <label class="form-label"><strong id="performance">Performance</strong></label>
+                        <p>This setting allows you to control the performance of the API calls in the comment export. If
+                            you get errors or your comment export won't finish: decrease the limit.</p>
+                        <div class="d-flex" style="gap: 5px;">
+                            <input type="range" class="form-range" id="performanceSlider" min="0" max="100" value="60"
+                                   oninput="updateSliderValue(this.value)">
+                            <span id="sliderValue">60%</span>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="memoryLimitCheckbox"
+                                   onchange="toggleMemoryLimitSelect()" checked>
+                        </div>
+                        <div>
+                            <label class="form-label"><strong>Limit Memory Usage</strong></label>
+                            <p>Control the memory usage of the app in preparation of the download. Once the process
+                                exceeds the memory limit, a file will start downloading and free up the used memory. In
+                                these situations you'll have more than one export file.</p>
+                            <select class="form-select form-select-sm" id="memoryLimitSelectContainer"
+                                    style="width: 50%; display: block;" aria-label="Memory limit select">
+                                <option value="100MB" selected>100MB</option>
+                                <option value="200MB" data-icon="tick">200MB</option>
+                                <option value="400MB" data-icon="tick">500MB</option>
+                                <option value="1GB" data-icon="tick">1GB</option>
+                                <option value="Unlimited" data-icon="tick">Unlimited</option>
+
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="margin-bottom: 20px;"/>
+            <div class="d-flex justify-content-between" style="margin-left: 720px;">
+                <div style="width: 200px;">
+                    <!-- Empty div for spacing if needed -->
+                </div>
+                <div>
+                    <button type="button" class="btn text-primary">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+        <!-- End of Settings Component -->
+
+
+        <!-- About Component -->
+        <div id="about" class="container mt-3 hidden">
+            <div style="margin-bottom: 40px;">
+                <h2>About</h2>
+                <p>This is a Premier Technology Partner of Zendesk.<br>
+                    And with over 15 complementary features the biggest Add-on partner.</p>
+            </div>
+            <div id="about_second">
+                <h3>Release notes</h3>
+                <p style="margin: 0; background-color: #cbcbcb;width: fit-content;padding-inline: 5px;">Version 2.11
+                <p>
+                <ul style="margin-top: -15px;">
+                    <li style="margin-top: -15px; color: #434242;">Latest version</li>
+                </ul>
+                </p>
+            </div>
+            <div id="about_third">
+                <h3>Support</h3>
+                <p>Visit our <a href="https://bluerockapps.co/" style="text-decoration: none;" target="_blank">Help
+                    Center <i class="bi bi-arrow-up-right-square"></i></a></p>
+            </div>
+        </div>
+        <!-- End of About Component -->
+
+
+        <!-- Access Component -->
+        <div id="access" class="container mt-3 hidden">
+            <div style="height: 600px; width: 100%;">
+                <h2>Access</h2>
+                <h3>App wide</h3>
+                <p>App wide access is also found on the app's settings page in Zendesk Admin Center.<br>
+                    These restrictions <strong>override all management access settings</strong>.</p>
+
+                <form>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input " type="checkbox" value="" id="roleRestrictions">
+                            <label class="form-check-label fw-semibold" for="roleRestrictions">
+                                Role restrictions
+                            </label>
+                        </div>
+                        <select class="form-select form-select-sm" id="roleRestrictionsSelect"
+                                aria-label="Role restrictions select" disabled>
+                            <option selected></option>
+                            <option value="Admin">Admin</option>
+                            <option value="Agent">Agent</option>
+                            <option value="Billing Admin">Billing Admin</option>
+                            <option value="Contributor">Contributor</option>
+                            <option value="Light Agent">Light Agent</option>
+                        </select>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input " type="checkbox" value="" id="groupRestrictions">
+                            <label class="form-check-label fw-semibold" for="groupRestrictions">
+                                Group restrictions
+                            </label>
+                        </div>
+                        <select class="form-select" id="groupRestrictionsSelect" aria-label="Group restrictions select"
+                                disabled>
+                            <!-- Options will be dynamically populated or hardcoded here -->
+                            <option selected></option>
+                            <option value="Support">Support</option>
+
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <hr style="margin-bottom: 20px;"/>
+            <div class="d-flex justify-content-between" style="margin-left: 720px;">
+                <div style="width: 200px;">
+                    <!-- Empty div for spacing if needed -->
+                </div>
+                <div>
+                    <button type="button" class="btn text-primary">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+        <!-- End of Access Component -->
+
+
+        <!--Templates Component ---------------------------------->
+        <div id="templates" class="container mt-3 hidden">
+            <div id="export">
+                <h2>Export templates</h2>
+                <p>Here you can manage your export templates.</p>
+            </div>
+            <div class="container mt-3 d-flex justify-content-end">
+                <button style="background-color: transparent; color: #007bff !important; border-color: #007bff !important; margin-bottom: -10px;"
+                        type="button" class="btn btn-outline-primary">Add Template
+                </button>
+            </div>
+            <div class="mb-3" id="tab-button">
+                <div class="mb-3 d-flex justify-content-between">
+                    <div>
+                        <ul class="nav nav-underline" id="toggleTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a style="padding-inline: 12px; margin-right:-8px;" class="nav-link active"
+                                   id="active-tab" data-bs-toggle="tab" href="#activeContent" role="tab"
+                                   aria-controls="activeContent" aria-selected="true">Active</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a style="padding-inline: 12px; margin-left:-8px;" class="nav-link" id="inactive-tab"
+                                   data-bs-toggle="tab" href="#inactiveContent" role="tab"
+                                   aria-controls="inactiveContent" aria-selected="false">Inactive</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr style="margin-top: -18px;"/>
+                <div class="tab-content mt-3">
+                    <div class="tab-pane fade show active" id="activeContent" role="tabpanel"
+                         aria-labelledby="active-tab">
+                        <!-- Content for the Active tab -->
+                        <table class="table" id="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Description<i class="bi bi-chevron-expand"></i></th>
+                                <th scope="col">Filename<i class="bi bi-chevron-expand"></i></th>
+                                <th scope="col">MIME Type<i class="bi bi-chevron-expand"></i></th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>CSV UTF-8 (comma delimited)</td>
+                                <td>{type}-export-{date}.csv</td>
+                                <td>text/csv</td>
+                                <td><i class="bi bi-three-dots-vertical " data-bs-toggle="dropdown"></i>
+                                    <ul class="dropdown-menu dropdown-menu-end" style="width: 80px;">
+                                        <li><a class="dropdown-item" href="#" data-action="edit" style="opacity: 60%;">Edit</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-action="deactivate">Deactivate</a>
+                                        </li>
+                                    </ul>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>CSV UTF-8 (semicolon delimited)</td>
+                                <td>{type}-export-{date}.csv</td>
+                                <td>text/csv</td>
+                                <td><i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#" data-action="edit" style="opacity: 60%;">Edit</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-action="deactivate">Deactivate</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>JSON</td>
+                                <td>{type}-export-{date}.json</td>
+                                <td>application/json</td>
+                                <td><i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#" data-action="edit" style="opacity: 60%;">Edit</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-action="deactivate">Deactivate</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>XML</td>
+                                <td>{type}-export-{date}.xml</td>
+                                <td>text/xml</td>
+                                <td><i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#" data-action="edit" style="opacity: 60%;">Edit</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-action="deactivate">Deactivate</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="inactiveContent" role="tabpanel" aria-labelledby="inactive-tab">
+                        <!-- Content for the Inactive tab -->
+                        <!-- Add content specific to the Inactive tab if needed -->
+                        <table class="table" id="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Description<i class="bi bi-chevron-expand"></i></th>
+                                <th scope="col">Filename<i class="bi bi-chevron-expand"></i></th>
+                                <th scope="col">MIME Type<i class="bi bi-chevron-expand"></i></th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>CSV UTF-8 (comma delimited)</td>
+                                <td>{type}-export-{date}.csv</td>
+                                <td>text/csv</td>
+                                <td><i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#" data-action="edit" style="opacity: 60%;">Edit</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-action="deactivate">Deactivate</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Template Export Component ------------------------------------>
+        <div id="addTemplateExport" class="container mt-3 hidden">
+            <h2>Add Export Template</h2>
+            <form style="width: 100%; margin-top: 50px;">
+                <div class="mb-3">
+                    <label for="templateName" class="form-label fw-bold">Description*</label>
+                    <input type="text" class="form-control" id="exportDescription">
+                </div>
+                <div class="mb-3">
+                    <label for="templateDescription" class="form-label fw-bold">Filename*</label>
+                    <input class="form-control" id="exportFilename"></input>
+                </div>
+                <div class="mb-3">
+                    <label for="templateName" class="form-label fw-bold">MIME Type*</label>
+                    <input type="text" class="form-control" id="exportMimeType">
+                </div>
+                <div class="mb-3">
+                    <label for="templateDescription" class="form-label fw-bold">Template*</label>
+                    <textarea class="form-control" id="exportTemplate" rows="6"></textarea>
+                </div>
+            </form>
+            <div style="position: fixed;bottom: 20px;width:80%;">
+                <hr/>
+                <div class="d-flex justify-content-end">
+                    <button class="btn mb-3 m-1 text-primary">Cancel</button>
+                    <button class="btn mb-3 m-1" style="background-color: #a8a8a8;border: none;" disabled>Create
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- End of Add Template Export Component ----------------------------->
+
+        <!-- End of Templates Component ------------------------------------->
+
+    </div>
+</div>
+<!-- End of Main Content -->
+</div>
+</body>
+<script src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>-->
+
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+<!-- ================= javascript ========================= -->
+
+<script>
+    var isActivated = false;
+    // JavaScript for conditional rendering of components
+
+    function toggleNavbar(section) {
+           var navbar = document.getElementById('navbar');
+           if (section === 'support') {
+               navbar.style.display = 'block';
+               showSupportNavItems();
+           } else if (section === 'talk') {
+               navbar.style.display = 'block';
+               showTalkNavItems();
+           }
+       }
+
+   function showSupportNavItems() {
+       showComponent('tickets')
+       document.getElementById('navbar').style.display = 'block';
+       document.getElementById('navbar').style.backgroundColor = '#f8f9f9';
+       document.getElementById('ticketsNavItem').style.visibility = 'visible';
+       document.getElementById('commentsNavItem').style.visibility = 'visible';
+       document.getElementById('usersNavItem').style.visibility = 'visible';
+       document.getElementById('organizationsNavItem').style.visibility = 'visible';
+       document.getElementById('attachmentsNavItem').style.visibility = 'visible';
+       document.getElementById('callsNavItem').style.visibility = 'hidden';
+       document.getElementById('legsNavItem').style.visibility = 'hidden';
+   }
+
+   function showTalkNavItems() {
+       showComponent('calls')
+       document.getElementById('navbar').style.display = 'block';
+       document.getElementById('ticketsNavItem').style.visibility = 'hidden';
+       document.getElementById('commentsNavItem').style.visibility = 'hidden';
+       document.getElementById('usersNavItem').style.visibility = 'hidden';
+       document.getElementById('organizationsNavItem').style.visibility = 'hidden';
+       document.getElementById('attachmentsNavItem').style.visibility = 'hidden';
+       document.getElementById('callsNavItem').style.visibility = 'visible';
+       document.getElementById('legsNavItem').style.visibility = 'visible';
+   }
+
+   function showComponent(componentId) {
+       // Hide all components
+       const components = document.querySelectorAll('#content > div');
+       components.forEach(function (component) {
+           component.classList.add('hidden');
+           component.style.height = '0';
+       });
+
+       // Remove the 'active' class from all sidebar items
+       const sidebarItems = document.querySelectorAll('#sidebar a.nav-link');
+       sidebarItems.forEach(function (item) {
+           item.classList.remove('active');
+       });
+
+       // Remove the 'active' class from all navbar items
+       const navbarItems = document.querySelectorAll('#navbar a.nav-link');
+       navbarItems.forEach(function (item) {
+           item.classList.remove('active');
+       });
+
+       // Show the requested component
+       const element = document.getElementById(componentId);
+       if (element) {
+           element.classList.remove('hidden');
+           element.style.height = 'auto';
+
+           // Add the 'active' class to the selected sidebar item
+           const selectedSidebarItem = document.querySelector(`#sidebar a.nav-link[onclick="showComponent('${componentId}')"]`);
+           if (selectedSidebarItem) {
+               selectedSidebarItem.classList.add('active');
+           }
+
+           // Add the 'active' class to the selected navbar item
+           const selectedNavbarItem = document.querySelector(`#navbar a.nav-link[onclick="showComponent('${componentId}')"]`);
+           if (selectedNavbarItem) {
+               selectedNavbarItem.classList.add('active');
+           }
+       }
+       // document.getElementById('navbar').style.display = 'none'; // if the navbar has to be seen only when clicked on support or talk
+
+       // Check if navbar should be visible for this component
+       if (componentId === 'tickets' || componentId === 'comments' || componentId === 'users' || componentId === 'organizations' || componentId === 'attachments' || componentId === 'calls' || componentId === 'legs') {
+               // Show the navbar
+               document.getElementById('navbar').style.display = 'block';
+           } else {
+               // Hide the navbar
+               document.getElementById('navbar').style.display = 'none';
+           }
+
+
+   }
+   // X=======================sidebar ends here-================================X
+
+   //end of  conditional rend logic
+   // slider component-------------------------------->
+     function updateSliderValue(value) {
+     const slider = document.getElementById('performanceSlider');
+     const percentage = (value - slider.min) / (slider.max - slider.min) * 100;
+     slider.style.setProperty('--range-value', `${percentage}%`);
+     document.getElementById('sliderValue').textContent = value + '%';
+   }
+
+   //end of slider-----------------------------------------X
+
+   // <--------------------------------start of access---------------------------->
+         //this is to handle access check box and related
+     document.addEventListener('DOMContentLoaded', (event) => {
+     // Function to toggle the disabled state of the corresponding select dropdown
+     function toggleSelect(checkboxId, selectId) {
+         const checkbox = document.getElementById(checkboxId);
+         const select = document.getElementById(selectId);
+         // Toggle the 'disabled' property based on the checkbox's 'checked' state
+         select.disabled = !checkbox.checked;
+     }
+
+     // Attach change event listeners to the checkboxes
+     document.getElementById('roleRestrictions').addEventListener('change', function() {
+         toggleSelect('roleRestrictions', 'roleRestrictionsSelect');
+     });
+
+     document.getElementById('groupRestrictions').addEventListener('change', function() {
+         toggleSelect('groupRestrictions', 'groupRestrictionsSelect');
+     });
+   });
+   //X-----------------------------------------------end of access-------------------------X
+
+
+   // <----------------------------template--------------------------------------------------->
+   // this is for handling templates section
+   document.addEventListener('DOMContentLoaded', (event) => {
+     // Get the radio buttons
+     const activeRadio = document.getElementById('btnradio1');
+     const inactiveRadio = document.getElementById('btnradio2');
+
+     // Function to filter the table based on the toggle
+     function filterTemplates(active) {
+         const rows = document.querySelectorAll('#templates table tbody tr');
+         rows.forEach(row => {
+             // This example assumes all rows are active; adjust logic as needed for your application
+             if (active) {
+                 row.style.display = ''; // Show row for active
+             } else {
+                 row.style.display = 'none'; // Hide row for inactive
+             }
+         });
+     }
+
+
+   // Event listener for the Active radio button
+             activeRadio.addEventListener('change', () => {
+                 if (activeRadio.checked) {
+                     filterTemplates(true);
+                 }
+             });
+
+             // Event listener for the Inactive radio button
+             inactiveRadio.addEventListener('change', () => {
+                 if (inactiveRadio.checked) {
+                     filterTemplates(false);
+                 }
+             });
+
+     });
+   //end of templates section
+      document.addEventListener('DOMContentLoaded', function () {
+      const addTemplateButton = document.getElementById('addTemplateButton');
+      const tabs = new bootstrap.Tab(document.getElementById('active-tab'));
+
+
+      addTemplateButton.addEventListener('click', function () {
+   // Your logic for the "Add Template" button click event
+          console.log("Adding a new template...");
+      });
+
+      tabs.show();
+   });
+
+   document.addEventListener('DOMContentLoaded', function() {
+       const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+       dropdownItems.forEach(item => {
+         item.addEventListener('click', function() {
+           const action = this.dataset.action;
+           const row = this.closest('tr');
+
+           if (action === 'edit') {
+             // Implement edit functionality
+             console.log('Edit action clicked for row:', row);
+           } else if (action === 'deactivate') {
+             // Implement deactivate functionality
+             row.style.display = 'none'; // Hide the row
+           }
+         });
+       });
+     });
+
+   // Add event listener to the "Add Template" button
+   document.addEventListener('DOMContentLoaded', function () {
+       document.querySelector('#templates .btn-outline-primary').addEventListener('click', function () {
+           // Hide the current templates component
+           document.getElementById('templates').style.display = 'none';
+           // Display the add template export component
+           document.getElementById('addTemplateExport').classList.remove('hidden');
+       });
+   });
+
+   // X---------------------------------template---------------------------------------X
+
+
+
+   // -----------------subscription plan ------------------------------------------>
+   const planCards = document.querySelectorAll('.plan-card');
+
+   planCards.forEach(card => {
+       card.addEventListener('click', () => {
+           planCards.forEach(otherCard => {
+               otherCard.querySelector('.text-light').style.display = 'none';
+               otherCard.style.backgroundColor = '#f2f2f3';
+               otherCard.style.border = 'none'; // Reset border for all cards
+               otherCard.querySelector('.btn').style.display = 'block';
+           });
+
+           card.querySelector('.text-light').style.display = 'block';
+           card.style.backgroundColor = ''; // Remove background color for the current plan
+           card.style.border = '2px solid #2995a8'; // Set border for the current plan
+           card.querySelector('.btn').style.display = 'none';
+       });
+   });
+
+   const defaultPlan = document.getElementById('enterprisePlan');
+   defaultPlan.querySelector('.text-light').style.display = 'block';
+   defaultPlan.style.border = '2px solid #2995a8'; // Set border for the default plan
+   defaultPlan.querySelector('.btn').style.display = 'none';
+
+
+   // ------------------------------subscription plan ends here----------------------X
+
+
+   // -------------------------activation---------------------------------------//
+                 //activation code part is here
+                 function loadNewComponent() {
+         // Logic to remove the current component and load the new one
+         // // For now, we will just hide the current component
+         // document.getElementById('activationComponent').style.display = 'none';
+
+
+
+         // // Placeholder for the new component's code
+         // // You'll replace this with the actual code needed to display the new component
+         // // Example: document.getElementById('newComponent').style.display = 'block';
+         //   // Show the new component
+         //   const newComponent = document.getElementById('exportDataForm');
+         // newComponent.style.display = 'block'; // Or 'flex' if you're using Flexbox for the layout
+         showComponent('exportDataForm')
+     }
+
+    // Event listener for the form submission
+     document.getElementById('activationForm').addEventListener('submit', function(e) {
+         e.preventDefault(); // Prevent the actual form submission
+         // Placeholder function where you will define the logic to render the new component
+         loadNewComponent();
+     });
+
+
+   // ------------------------tickets and export-----------------------------
+
+   document.addEventListener('DOMContentLoaded', (event) => {
+      document.getElementById('continueViewBased').addEventListener('click', function() {
+          // Hide the current exxport t componets
+          document.getElementById('tickets').style.display = 'none';
+          // Display the component with tables
+          showComponent('ticketExportComponent');
+      });
+
+      document.getElementById('continueSearchBased').addEventListener('click', function() {
+           // Hide the current exxport t componets
+           document.getElementById('tickets').style.display = 'none';
+           // Display the component with tables
+           showComponent('ticketExportComponentsearch');
+       });
+
+      document.getElementById('continueTimeBased').addEventListener('click', function() {
+       // Hide the current exxport t componets
+       document.getElementById('tickets').style.display = 'none';
+       // Display the component with tables
+       showComponent('ticketExportComponentTime');
+   });
+
+   });
+
+   // ------------------------tickets and export end -----------------------------
+
+   //   <-- Settings component logic-------------------------->
+   function toggleMemoryLimitSelect() {
+           var checkbox = document.getElementById("memoryLimitCheckbox");
+           var selectContainer = document.getElementById("memoryLimitSelectContainer");
+           if (checkbox.checked) {
+               selectContainer.style.display = "block";
+           } else {
+               selectContainer.style.display = "none";
+           }
+       }
+   // -------------Settings Component--------------------
+
+   // ----Comment component logic-----------------------
+   document.addEventListener('DOMContentLoaded', function() {
+       const startDateInput = document.getElementById('startDate');
+       const endDateInput = document.getElementById('endDate');
+
+       // Format date function
+       function formatDate(date) {
+           const options = { year: 'numeric', month: 'long', day: 'numeric' };
+           return new Date(date).toLocaleDateString('en-US', options);
+       }
+
+       // Update value of start and end date inputs
+       startDateInput.addEventListener('change', function() {
+           this.value = formatDate(this.value);
+       });
+
+       endDateInput.addEventListener('change', function() {
+           this.value = formatDate(this.value);
+       });
+   });
+   $(function() {
+       $('input[name="daterange"]').daterangepicker({
+           opens: 'left'
+       }, function(start, end, label) {
+           console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+       });
+   });
+
+
+   // ----------------------------- comment export -----------------------------
+
+   // Add event listener to the "Continue" button
+   document.getElementById('continueCommentExport').addEventListener('click', function() {
+       // Hide the current component
+       document.getElementById('comments').style.display = 'none';
+       // Display the Comment Export component
+       document.getElementById('commentExportComponent').classList.remove('hidden');
+   });
+
+   // ----------------------------- User -----------------------------
+
+   document.getElementById('continueUserExport').addEventListener('click', function() {
+       // Hide the current component
+       document.getElementById('users').style.display = 'none';
+       // Display the Comment Export component
+       document.getElementById('userExportComponent').classList.remove('hidden');
+   });
+
+   //----------------------------- Organization -----------------------------
+   // rendering the oragnization export
+   document.getElementById('continueOrgExport').addEventListener('click', function() {
+       // Hide the current component
+       document.getElementById('organizations').style.display = 'none';
+       // Display the Comment Export component
+       document.getElementById('organizationExportComponent').classList.remove('hidden');
+   });
+
+   document.getElementById('continueOrgExportTime').addEventListener('click', function() {
+       // Hide the current component
+       document.getElementById('organizations').style.display = 'none';
+       // Display the Comment Export component
+       document.getElementById('organizationExportComponentTime').classList.remove('hidden');
+   });
+
+
+
+   // -----------------------------attachment -----------------------------
+   // Add event listener to the "Continue" button for attachment export
+   document.getElementById('continueAttachmentExport').addEventListener('click', function() {
+       // Hide the current component
+       document.getElementById('attachments').classList.add('hidden');
+       // Display the Attachment Export component
+       document.getElementById('attachmentExportComponent').classList.remove('hidden');
+   });
+   // -----------------------------attachment -----------------------------
+
+
+   // calllss-------------------------------->
+   document.getElementById('continueCallsExport').addEventListener('click', function() {
+       // Hide the current component
+       document.getElementById('calls').classList.add('hidden');
+       // Display the Attachment Export component
+       document.getElementById('callsExportComponent').classList.remove('hidden');
+   });
+
+   // Function to check selections in Calls Export component
+   function checkCallSelections() {
+       var callViewSelect = document.getElementById('callViewSelect');
+       var callTemplateSelect = document.getElementById('callTemplateSelect');
+       var callViewSelectMessage = document.getElementById('callViewSelectMessage');
+
+       if (callViewSelect.value && callTemplateSelect.value) {
+           document.getElementById('callTablePlaceholder').classList.remove('d-none');
+           callViewSelectMessage.style.display = 'block';
+           // Placeholder message; you can update this according to your logic
+           callViewSelectMessage.textContent = 'This view contains 10 calls.';
+       } else {
+           document.getElementById('callTablePlaceholder').classList.add('d-none');
+           callViewSelectMessage.style.display = 'none';
+       }
+   }
+
+   // Function to add call field to the table in Calls Export component
+   function addCallFieldToTable() {
+       var callAddFieldSelect = document.getElementById('callAddFieldSelect');
+       var field = callAddFieldSelect.value;
+
+       var type = 'text'; // Default type
+
+       // Add a new row to the table if a field is selected
+       if (field) {
+           var table = document.getElementById('callFieldMappingTable').getElementsByTagName('tbody')[0];
+           var newRow = table.insertRow();
+           var iconCell = newRow.insertCell(0);
+           var fieldCell = newRow.insertCell(1);
+           var groupCell = newRow.insertCell(2);
+           var typeCell = newRow.insertCell(3);
+           var deleteCell = newRow.insertCell(4);
+
+           iconCell.innerHTML = '<i class="bi bi-grip-vertical"></i>';
+           fieldCell.textContent = field;
+           groupCell.textContent = 'Call'; // Assuming all fields belong to the "Call" group
+           typeCell.textContent = type;
+           deleteCell.innerHTML = '<button class="btn btn-sm" style="color: #007bff;" onclick="deleteCallRow(this)"><i class="bi bi-trash"></i></button>';
+
+           // Reset the select dropdown
+           callAddFieldSelect.selectedIndex = 0;
+       }
+   }
+
+   // Function to delete call row from table in Calls Export component
+   function deleteCallRow(btn) {
+       var row = btn.closest('tr');
+       row.parentNode.removeChild(row);
+   }
+
+   // Legs ---------------->
+
+   document.getElementById('continueLegsExport').addEventListener('click', function() {
+       // Hide the current component
+       document.getElementById('legs').classList.add('hidden');
+       // Display the Attachment Export component
+       document.getElementById('legsExportComponent').classList.remove('hidden');
+   });
+   // Function to check selections in Legs Export component
+   function checkLegsSelections() {
+       var legsViewSelect = document.getElementById('legsViewSelect');
+       var legsTemplateSelect = document.getElementById('legsTemplateSelect');
+       // var legsViewSelectMessage = document.getElementById('legsViewSelectMessage');
+
+       if (legsViewSelect.value && legsTemplateSelect.value) {
+           document.getElementById('legsTablePlaceholder').classList.remove('d-none');
+           legsViewSelectMessage.style.display = 'block';
+           // Placeholder message; you can update this according to your logic
+           // legsViewSelectMessage.textContent = 'This view contains 5 legs.';
+       } else {
+           document.getElementById('legsTablePlaceholder').classList.add('d-none');
+           legsViewSelectMessage.style.display = 'none';
+       }
+   }
+
+   // Function to add legs field to the table in Legs Export component
+   function addLegsFieldToTable() {
+       var legsAddFieldSelect = document.getElementById('legsAddFieldSelect');
+       var field = legsAddFieldSelect.value;
+
+       var type = 'text'; // Default type
+
+       // Add a new row to the table if a field is selected
+       if (field) {
+           var table = document.getElementById('legsFieldMappingTable').getElementsByTagName('tbody')[0];
+           var newRow = table.insertRow();
+           var iconCell = newRow.insertCell(0);
+           var fieldCell = newRow.insertCell(1);
+           var groupCell = newRow.insertCell(2);
+           var typeCell = newRow.insertCell(3);
+           var deleteCell = newRow.insertCell(4);
+
+           iconCell.innerHTML = '<i class="bi bi-grip-vertical"></i>';
+           fieldCell.textContent = field;
+           groupCell.textContent = 'Leg'; // Assuming all fields belong to the "Leg" group
+           typeCell.textContent = type;
+           deleteCell.innerHTML = '<button class="btn btn-sm" style="color: #007bff;" onclick="deleteLegsRow(this)"><i class="bi bi-trash"></i></button>';
+
+           // Reset the select dropdown
+           legsAddFieldSelect.selectedIndex = 0;
+       }
+   }
+
+   // Function to delete legs row from table in Legs Export component
+   function deleteLegsRow(btn) {
+       var row = btn.closest('tr');
+       row.parentNode.removeChild(row);
+   }
+
+   // DatePicker (select and pass start_date and end_date)
+   var start_time = moment().subtract(1, 'days').format('YYYY-MM-DD');
+   var end_time = moment().format('YYYY-MM-DD');
+   $(function() {
+     $('input[name="startdate"], input[name="enddate"]').daterangepicker({
+       // opens: 'left',
+       singleDatePicker: true,
+       showDropdowns: true,
+       minYear: 2001,
+       maxYear: parseInt(moment().format('YYYY'), 10)
+     }, function(start, end, label) {
+       if ($(this.element).attr('name') === 'startdate') {
+         start_time = start.format('YYYY-MM-DD')
+         console.log("Start date selected:" + start.format('YYYY-MM-DD'));
+       } else if ($(this.element).attr('name') === 'enddate') {
+         end_time = end.format('YYYY-MM-DD')
+         console.log("End date selected:" + end.format('YYYY-MM-DD'));
+       }
+     });
+   });
+
+</script>
+
+<!---------------------------------------  Activation button javascript code  ----------------------------->
+
+<!--------------------------------------- end Activation button javascript code  ----------------------------->
+
+
+<script src="js/ticket/ticket.js"></script>
+<script src="js/comments/time_based_comments.js"></script>
+<script src="js/user/search_based_users.js"></script>
+<script src="js/attachments/time_based_attachments.js"></script>
+<script src="js/organization/organizations.js"></script>
+<script>
+    //showLoader();
+
+    function showLoader() {
+      document.getElementById('loader-outer').style.display = 'block';
+    }
+
+    function hideLoader() {
+      document.getElementById('loader-outer').style.display = 'none';
+    }
+</script>
+</html>

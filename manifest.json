@@ -1,0 +1,20 @@
+{
+  "name": "Export Everything",
+  "author": {
+    "name": "bluerockapps",
+    "email": "info@bluerockapps.com",
+    "url": "https://bluerockapps.co/"
+  },
+  "defaultLocale": "en",
+  "private": true,
+  "location": {
+    "support": {
+      "ticket_sidebar": "assets/iframe.html",
+      "new_ticket_sidebar": "assets/iframe.html?location=new_ticket_sidebar",
+      "nav_bar": "assets/index.html",
+      "top_bar": "assets/index.html"
+    }
+  },
+  "version": "1.0.0",
+  "frameworkVersion": "2.0"
+}
