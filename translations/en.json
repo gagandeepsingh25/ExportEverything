@@ -2,7 +2,7 @@
   "app": {
     "name": "Export Everything",
     "short_description": "Save and load export configurations for quick re-use, ensuring efficiency and convenience in your data management processes.",
-    "long_description": "Export Everything offers a 7 day trial version andincludes the following features: \n- Export tickets, organizations, comments, users, custom fields and attachments with ease using our comprehensive export feature. \n\n- Select and export 100s of custom fields tailored to your specific needs.  \n\n- Choose from a variety of predefined export formats such as CSV, XML, and JSON  \n\n- Craft your own export formats \n\n- Save and load export configurations for quick re-use, ensuring efficiency and convenience in your data management processes",
+    "long_description": "Export Everything offers a 7 day trial version and includes the following features: \n Export tickets, organizations, comments, users, custom fields and attachments with ease using our comprehensive export feature. \n\n Select and export 100s of custom fields tailored to your specific needs.  \n\n Choose from a variety of predefined export formats such as CSV, XML, and JSON  \n\n Craft your own export formats \n\n Save and load export configurations for quick re-use, ensuring efficiency and convenience in your data management processes",
     "installation_instructions": "Simply click on install to start using the App."
   }
 }

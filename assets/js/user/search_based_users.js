@@ -18,10 +18,9 @@ async function checkUserSelections() {
          // Call searchUsersData function and handle the data
         try {
             const query = userViewSelect.value;
-            const result = await searchUsersData(zendesk_domain, username, token, query);
+            const result = await searchUsersData(query);
 
             Search_Users_Data = result.user_data;
-            console.log('Search-Users-Data:', result);
         } catch (error) {
             console.error('Error fetching search users data:', error);
         }
@@ -142,7 +141,7 @@ function deleteUserRow(btn) {
     row.parentNode.removeChild(row);
 }
 
-async function searchUsersData(zendesk_domain, username, token, query) {
+async function searchUsersData(query) {
     query = query.toString();
     showLoader();
     if (!query) {
@@ -151,7 +150,7 @@ async function searchUsersData(zendesk_domain, username, token, query) {
         return Promise.reject('Invalid search query.');
     }
 
-    const auth = `Basic ${btoa(`${username}/token:${token}`)}`;
+    const auth = `Basic ${btoa(`${username}/token:${tok}`)}`;
     const headers = {
         Authorization: auth,
         'Content-Type': 'application/json',
@@ -185,7 +184,6 @@ async function searchUsersData(zendesk_domain, username, token, query) {
 //            try {
 //                if ('organization_id' in u_d[i]) {
 //                    const org_id = u_d[i]['organization_id'];
-//                    console.log('org_id-*****', org_id);
 //                    if (org_id && org_id !== 'null' && org_id !== undefined) {
 //                        const orgUrl = `${zendesk_domain}/api/v2/organizations/${org_id}`;
 //                        const orgResponse = await fetch(orgUrl, {
@@ -207,7 +205,6 @@ async function searchUsersData(zendesk_domain, username, token, query) {
 //
 //                if ('group_id' in u_d[i]) {
 //                    const grp_id = u_d[i]['group_id']; // Use u_d[i] instead of i
-//                    console.log('grp_id-*****', grp_id);
 //                    if (grp_id && grp_id !== 'null' && grp_id !== undefined) {
 //                        const groupUrl = `${zendesk_domain}/api/v2/groups/${grp_id}`;
 //                        const groupResponse = await fetch(groupUrl, {
@@ -243,10 +240,9 @@ async function searchUsersData(zendesk_domain, username, token, query) {
 }
 
 
-//function searchUsersData(zendesk_domain, username, token, query) {
+//function searchUsersData(query) {
 //    query = query.toString();
 //    showLoader();
-//    console.log('Search Query:-', query);
 //
 //    if (!query) {
 //        console.error('Invalid search query. Please provide a valid query.');
@@ -255,17 +251,15 @@ async function searchUsersData(zendesk_domain, username, token, query) {
 //    }
 //
 //   const headers = {
-//        Authorization: `Basic ${btoa(`${username}/token:${token}`)}`,
+//        Authorization: `Basic ${btoa(`${username}/token:${tok}`)}`,
 //        'Content-Type': 'application/json'
 //   };
 //
-//   console.log(headers);
 //    const url = `${zendesk_domain}/api/v2/search.json?query= type:user ${query}&sort_by=created_at&sort_order=asc`;
 //    return client.request(url, {
 //        type: 'GET',
 //        headers: headers,
 //    }).then((response) => {
-//        console.log('response->->->->', response);
 //        hideLoader();
 //        u_d = response['results'];
 //        if (response && response.results.length) {
@@ -288,13 +282,11 @@ async function searchUsersData(zendesk_domain, username, token, query) {
 
 // Function to create a CSV file from selected fields
 async function createUsersContent(search_users_data, dict) {
-    console.log('i am here....', search_users_data, dict);
     try {
         var selectedFieldsArray = [];
 
         for (var i = 0; i < search_users_data.length; i++) {
             var user = search_users_data[i];
-            console.log('User-----', user);
 
             var selectedFieldsObject = {};
 
@@ -349,11 +341,9 @@ async function createUsersContent(search_users_data, dict) {
 
             selectedFieldsArray.push(selectedFieldsObject);
         }
-//        console.log('selectedFieldsArray--', selectedFieldsArray)
 //        // Convert the arrays to CSV format
 //        var csv = convertArrayOfObjectsToCSV(selectedFieldsArray);
 //        downloadCSV(csv,'ticket-export.csv');
-        console.log("Selected Template:", selected_template);
         if (selected_template == 'JSON'){
             // Convert the arrays to JSON format
             var jsonContent = JSON.stringify(selectedFieldsArray, null, 2);
@@ -387,11 +377,7 @@ async function createUsersContent(search_users_data, dict) {
 // Add an event listener to the "Export" button
 document.getElementById('search_user_export_Button').addEventListener('click', async function () {
     try {
-        console.log('Users onclick users export button:');
         addUserFieldToTable();
-        console.log('Users dict data which one you select(fields)', dict);
-
-        console.log('Users data api data your tickets:',Search_Users_Data);
         await createUsersContent(Search_Users_Data, dict);
     } catch (error) {
         console.error('Error fetching onclick users export button:', error);

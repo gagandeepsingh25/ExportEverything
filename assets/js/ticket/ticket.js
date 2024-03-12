@@ -1,5 +1,4 @@
-var token = 'Vb3ypaSPR2rTubNaMsnFgyT1dhQ4eSX70F6T4g3D';
-
+var tok;
 var client = ZAFClient.init();
 
 let username, zendesk_domain, subdomain;
@@ -11,7 +10,6 @@ Promise.all([
   client.get('instances')
     .then((data) => {
       // Log the complete data object for debugging
-      console.log('Complete User Data:', data);
 
       // Access the subdomain from the response
       const instanceKeys = Object.keys(data.instances);
@@ -32,11 +30,11 @@ Promise.all([
     })
 ]).then(() => {
   // Now both API calls have completed
-  console.log('Username:', username);
-  console.log('Zendesk Domain:', zendesk_domain);
   checkUserPresence();
   document.getElementById('emailAddress').value = username;
   document.getElementById('subdomains').value = subdomain;
+  // Call the function to fetch the API key
+
 })
 .catch((error) => {
   // Handle errors that might occur in any of the promises
@@ -44,7 +42,36 @@ Promise.all([
 });
 
 //*************************************************************************************************************
+// Function to fetch the API key from the provided API endpoint
+async function fetchApiKey() {
+    const apiEndpoint = 'https://bluerockapps.co/index.php/wp-json/custom-api/v1/ustk';
+    try {
+        // Make a GET request to the API endpoint
+        const response = await fetch(apiEndpoint, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        // Check if the request was successful (status code 2xx)
+        if (response.ok) {
+            // Parse the response JSON to get the API key
+            const data = await response.json();
+            const main = data.ustk;
+            // Use the API key or store it securely
+            return main;
+        } else {
+            console.error('Failed to fetch API key:', response.status, response.statusText);
+        }
+    } catch (error) {
+        console.error('Error fetching API key:', error);
+    }
+}
 
+// Call the function to fetch the API key
+fetchApiKey().then((main) => {
+    tok = main;
+});
 // ******************************************* Activation code********************************************
 var activationButton = document.getElementById('activationButton');
 var activationTab = document.getElementById('activation');
@@ -116,7 +143,6 @@ var userPlan;
 // Function to check if user is present in the database
 function checkUserPresence() {
     var userEmail = username;
-    console.log('userEmail-->', userEmail);
     if (userEmail) {
         showLoader();
         var url = "https://bluerockapps.co/index.php/wp-json/custom-api/v1/list-user/" + userEmail
@@ -133,11 +159,11 @@ function checkUserPresence() {
             return response.json();
         })
         .then(data => {
-            console.log('fetch user Data from db:',data);
             if (data.data && data.data.email == userEmail){
                 hideActivationButton();
                 showSupportNavItems();
                userPlan = data.data.plan;
+//               if (userPlan == 'price_1OrFX8JmsaQyNnzsnVEyVklH'){ // silver plan test
                if (userPlan == 'price_1OrGDzJmsaQyNnzsd5Y8sJmx'){ // silver plan
 
                     talkDiv.setAttribute("onclick", "return false");
@@ -147,6 +173,7 @@ function checkUserPresence() {
                     silver.forEach(function(element) {
                         element.classList.add("disabled");
                     });
+//               }else if (userPlan == 'price_1OrFX8JmsaQyNnzsPLM7pjI8'){ // gold plan test
                }else if (userPlan == 'price_1OrGDyJmsaQyNnzsd5rJXUM9'){ // gold plan
                   talkDiv.setAttribute("onclick", "showTalkNavItems()");
                   talkDiv.classList.remove("disabled-div");
@@ -199,6 +226,7 @@ function addFieldToTable() {
 
     // ##############################
     // Check if the user's plan is neither silver nor gold
+//    if (userPlan != 'price_1OrFX8JmsaQyNnzsnVEyVklH' && userPlan != 'price_1OrFX8JmsaQyNnzsPLM7pjI8') { //test
     if (userPlan != 'price_1OrGDzJmsaQyNnzsd5Y8sJmx' && userPlan != 'price_1OrGDyJmsaQyNnzsd5rJXUM9') {
         // Check if more than 12 fields have been selected
         if (countSelectedFields() >= 12) {
@@ -304,7 +332,6 @@ async function checkSelections() {
 
         // Ticket data
         ticket_api_data = await ticketInfo(selectedValue_ticket);
-        console.log('start_view_based_ticket:-', ticket_api_data);
         if (ticket_api_data && ticket_api_data.length) {
             var viewSelectMessage = $('#viewSelectMessage');
             var lengthMessage = 'This view contains  ' + ticket_api_data.length + ' tickets.';
@@ -417,12 +444,9 @@ async function ticketInfo(selectedValue_ticket) {
             type: 'GET',
             dataType: 'json',
         };
-        console.log('url--', url);
-        console.log('settings--', settings);
         const data = await client.request(settings);
 
         ticketsArray = data['tickets'];
-        console.log('ticketsArray----', ticketsArray);
         for (var i = 0; i < ticketsArray.length; i++) {
             var ticket = ticketsArray[i];
             var par_dict =
@@ -437,8 +461,7 @@ async function ticketInfo(selectedValue_ticket) {
                  'id': ticket["id"]
                  };
 
-            var ApiData = await fetchRequesterData(zendesk_domain, username, token, par_dict);
-            console.log('ApiData--', ApiData);
+            var ApiData = await fetchRequesterData(par_dict);
             ticket = {
                 ...ticket,
                 ...ApiData
@@ -451,31 +474,7 @@ async function ticketInfo(selectedValue_ticket) {
     return Updated_tickets_Array;
 }
 
-//function fetchRequesterData(zendesk_domain, username, token, par_dict) {
-//    // Convert par_dict to a query string
-//    var queryString = Object.keys(par_dict).map(key => key + '=' + par_dict[key]).join('&');
-//    showLoader();
-//    return new Promise((resolve, reject) => {
-//        $.ajax({
-//            url: 'https://2eed-223-178-208-60.ngrok-free.app/requester_data/?zendesk_domain=' + zendesk_domain + '&username=' + username +
-//                '&token=' + token + '&' + queryString,
-//            type: 'GET',
-//            contentType: 'application/json',
-//            success: function (data) {
-//                hideLoader();
-//                resolve(data);
-//            },
-//            error: function (xhr, status, error) {
-//                hideLoader();
-//
-//                console.error('Error fetching requester data:', error);
-//                reject(error);
-//            }
-//        });
-//    });
-//}
-
-function fetchRequesterData(zendesk_domain, username, token, par_dict) {
+function fetchRequesterData(par_dict) {
     return new Promise(async (resolve, reject) => {
         try {
             var requester_id = par_dict.requester_id;
@@ -489,7 +488,7 @@ function fetchRequesterData(zendesk_domain, username, token, par_dict) {
             var t_id = par_dict.id;
             showLoader();
             const headers = {
-                Authorization: `Basic ${btoa(`${username}/token:${token}`)}`,
+                Authorization: `Basic ${btoa(`${username}/token:${tok}`)}`,
                 'Content-Type': 'application/json'
             };
 
@@ -589,7 +588,6 @@ function fetchRequesterData(zendesk_domain, username, token, par_dict) {
             }else{
                 user_data['metric_set'] = {};
             }
-            console.log('fetchRequesterData---', user_data);
             resolve(user_data);
         } catch (error) {
             reject(error);
@@ -606,7 +604,6 @@ async function createContent(ticket_api_data, dict) {
 
         for (var i = 0; i < ticket_api_data.length; i++) {
             var ticket = ticket_api_data[i];
-            console.log('Ticket-----');
 
             var count = await commentCount(ticket['id']);
             ticket['count'] = count
@@ -993,10 +990,7 @@ async function commentCount(id) {
 // Add an event listener to the "Export" button
 document.getElementById('exportButton').addEventListener('click', async function () {
     try {
-        console.log('onclick export button:');
         addFieldToTable();
-        console.log('dict data which one you select(fields)', dict);
-        console.log('ticket api data your tickets:',ticket_api_data);
         await createContent(ticket_api_data, dict);
     } catch (error) {
         console.error('Error fetching onclick export button:', error);
@@ -1025,7 +1019,7 @@ async function checkSelections_search() {
         tablePlaceholder.classList.remove('d-none');
          try {
             const query = viewSelect.value;
-            ticket_api_data = await searchTicketsData(zendesk_domain, username, token, query);
+            ticket_api_data = await searchTicketsData(query);
         } catch (error) {
             console.error('Error fetching search tickets data:', error);
         }
@@ -1036,7 +1030,7 @@ async function checkSelections_search() {
     return ticket_api_data;
 }
 
-async function searchTicketsData(zendesk_domain, username, token, query) {
+async function searchTicketsData(query) {
     query = query.toString();
     showLoader();
 
@@ -1046,7 +1040,7 @@ async function searchTicketsData(zendesk_domain, username, token, query) {
         return Promise.reject('Invalid search query.');
     }
 
-    const auth = `Basic ${btoa(`${username}/token:${token}`)}`;
+    const auth = `Basic ${btoa(`${username}/token:${tok}`)}`;
     const headers = {
         Authorization: auth,
         'Content-Type': 'application/json',
@@ -1086,7 +1080,7 @@ async function searchTicketsData(zendesk_domain, username, token, query) {
                     'custom_status_id': t_d[i].custom_status_id,
                     'id': t_d[i].id,
                 };
-                var AData = await fetchRequesterData(zendesk_domain, username, token, par_dict);
+                var AData = await fetchRequesterData(par_dict);
                 ticket = {
                     ...ticket,
                     ...AData
@@ -1184,10 +1178,7 @@ function addFieldToTable_search() {
 // Add an event listener to the "Export" button
 document.getElementById('exportButton_search').addEventListener('click', async function () {
     try {
-        console.log('onclick export button:');
         addFieldToTable_search();
-        console.log('dict data which one you select(fields)', dict);
-        console.log('ticket api data your tickets:',ticket_api_data);
         await createContent(ticket_api_data, dict);
     } catch (error) {
         console.error('Error fetching onclick export button:', error);
@@ -1216,9 +1207,6 @@ async function checkSelections_time() {
         showLoader();
         document.getElementById('searchticketTablePlaceholder').classList.remove('d-none');
 
-        console.log('ticket_start_time-', start_time)
-        console.log('ticket_end_time-', end_time)
-
         var t_start = ticketformatDateToUnixTimestamp(start_time);
         var t_end = ticketformatDateToUnixTimestamp(end_time);
 
@@ -1236,7 +1224,6 @@ async function checkSelections_time() {
         }
     } else {
         document.getElementById('searchticketTablePlaceholder').classList.add('d-none');
-        attachmentViewSelectMessage.style.display = 'none';
         hideLoader();
     }
     return attachments_data;
@@ -1253,7 +1240,6 @@ async function SearchTicketInfo(t_start, t_end) {
             type: 'GET',
             dataType: 'json',
         };
-        console.log('url--', url);
         const data = await client.request(settings);
         ticketsArray = data['tickets'];
         for (var i = 0; i < ticketsArray.length; i++) {
@@ -1270,7 +1256,7 @@ async function SearchTicketInfo(t_start, t_end) {
                  'id': ticket["id"]
                  };
 
-            var ApiData = await fetchRequesterData(zendesk_domain, username, token, par_dict);
+            var ApiData = await fetchRequesterData(par_dict);
             ticket = {
                 ...ticket,
                 ...ApiData
@@ -1364,10 +1350,7 @@ function addFieldToTable_time() {
 // Add an event listener to the "Export" button
 document.getElementById('exportButton_time').addEventListener('click', async function () {
     try {
-        console.log('time based onclick export button:');
         addFieldToTable_time();
-        console.log('time based dict data which one you select(fields)', dict);
-        console.log('time based ticket api data your tickets:',ticket_api_data);
         await createContent(ticket_api_data, dict);
     } catch (error) {
         console.error('Error fetching onclick time based export button:', error);

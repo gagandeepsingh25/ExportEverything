@@ -2001,28 +2001,7 @@
 
         <div id="callsExportComponent" class="container mt-3 hidden">
             <h2>Calls Export</h2>
-
             <!-- Content for Calls Export -->
-            <div class="mb-3">
-                <label for="callViewSelect" class="form-label" style="font-weight: 600;">Select a view</label>
-                <p style="font-size: 14px; color: #919191; margin-top: -10px;" class="form-label">Select a view that
-                    contains calls you would like to export</p>
-
-                <select style="width: 400px;" class="form-select" id="callViewSelect" onchange="checkCallSelections()">
-                    <option value="All calls">All calls</option>
-                    <option value="Incoming calls">Incoming calls</option>
-                    <option value="Outgoing calls">Outgoing calls</option>
-                </select>
-                <small id="callViewSelectMessage"
-                       style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;">This view contains 10
-                    calls.</small>
-            </div>
-            <hr/>
-            <!-- <div>
-                <p class="fw-semibold" style="margin: 0;">Date Range</p>
-                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range will be exported</p>
-                <input type="text" style="width: 40%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"name="daterange" value="01/01/2024 - 01/15/2024" />
-            </div> -->
             <div>
                 <p class="fw-semibold" style="margin: 0;">Date Range</p>
                 <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range
@@ -2046,6 +2025,8 @@
                     <option value="JSON">JSON</option>
                     <option value="XML">XML</option>
                 </select>
+                <small id="callsSelectMessage"
+                           style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;"></small>
             </div>
             <hr/>
 
@@ -2080,17 +2061,15 @@
                     </select>
                 </div>
             </div>
-            <div class="d-flex justify-content-between" style="margin-left: 65%;position: absolute; bottom: 10px;">
+            <div class="d-flex justify-content-between" style="margin-left: 65%;position: absolute; bottom: 20px; right:20px;">
                 <hr/>
-                <div>
-                </div>
-                <div class="d-flex">
+                <div style="gap: 5px;" class="d-flex justify-content-end mb-3">
                     <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
                     <button disabled type="button" class="btn btn-secondary mr-2"
                             style="background-color: #e9ebed; border: none; color: #919191;">Save
                     </button>
-                    <button type="button" class="btn btn-primary "
-                            style="background-color: #0176b3 ;padding-left: 5px;">Export
+                    <button type="button" class="btn btn-primary"
+                            style="background-color: #0176b3 ;padding-left: 5px;" id="time_calls_export_Button">Export
                     </button>
                 </div>
             </div>
@@ -2122,30 +2101,7 @@
         </div>
         <div id="legsExportComponent" class="container mt-3 hidden">
             <h2>Legs Export</h2>
-
             <!-- Add legs export content here -->
-
-            <div style="margin-top: 20px;" class="mb-3">
-                <label for="legsViewSelect" class="form-label" style="font-weight: 600;">Select a view</label>
-                <p style="font-size: 14px; color: #919191; margin-top: -10px;" class="form-label">Select a view that
-                    contains legs you would like to export</p>
-
-                <select style="width: 400px;" class="form-select" id="legsViewSelect" onchange="checkLegsSelections()">
-                    <option value="All legs">All legs</option>
-                    <option value="Completed legs">Completed legs</option>
-                    <option value="Pending legs">Pending legs</option>
-                </select>
-                <small id="legsViewSelectMessage"
-                       style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;">This view contains 5
-                    legs.</small>
-            </div>
-            <hr/>
-
-            <!-- <div>
-                <p class="fw-semibold" style="margin: 0;">Date Range</p>
-                <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range will be exported</p>
-                <input type="text" style="width: 40%;height: 40px; border-radius: 5px; border: 0.5px solid rgb(87, 87, 234);"name="daterange" value="01/01/2024 - 01/15/2024" />
-            </div> -->
             <div>
                 <p class="fw-semibold" style="margin: 0;">Date Range</p>
                 <p style="color: #a8a8a8;margin: 0;">Tickets that have been created or updated within the date range
@@ -2169,6 +2125,8 @@
                     <option value="JSON">JSON</option>
                     <option value="XML">XML</option>
                 </select>
+                <small id="legsSelectMessage"
+                           style="font-size: 12px; margin-left: 20px; display: none; color:#46ba8a;"></small>
             </div>
             <hr/>
 
@@ -2203,17 +2161,15 @@
                     </select>
                 </div>
             </div>
-            <div class="d-flex justify-content-between" style="margin-left: 65%;position: absolute; bottom: 10px;">
+            <div class="d-flex justify-content-between" style="margin-left: 65%;position: absolute; bottom: 20px; right:20px;">
                 <hr/>
-                <div>
-                </div>
-                <div class="d-flex">
+                <div style="gap: 5px;" class="d-flex justify-content-end mb-3">
                     <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
                     <button disabled type="button" class="btn btn-secondary mr-2"
                             style="background-color: #e9ebed; border: none; color: #919191;">Save
                     </button>
-                    <button type="button" class="btn btn-primary "
-                            style="background-color: #0176b3 ;padding-left: 5px;">Export
+                    <button type="button" class="btn btn-primary"
+                            style="background-color: #0176b3 ;padding-left: 5px;" id="time_legs_export_Button">Export
                     </button>
                 </div>
             </div>
@@ -3063,57 +3019,6 @@
        document.getElementById('callsExportComponent').classList.remove('hidden');
    });
 
-   // Function to check selections in Calls Export component
-   function checkCallSelections() {
-       var callViewSelect = document.getElementById('callViewSelect');
-       var callTemplateSelect = document.getElementById('callTemplateSelect');
-       var callViewSelectMessage = document.getElementById('callViewSelectMessage');
-
-       if (callViewSelect.value && callTemplateSelect.value) {
-           document.getElementById('callTablePlaceholder').classList.remove('d-none');
-           callViewSelectMessage.style.display = 'block';
-           // Placeholder message; you can update this according to your logic
-           callViewSelectMessage.textContent = 'This view contains 10 calls.';
-       } else {
-           document.getElementById('callTablePlaceholder').classList.add('d-none');
-           callViewSelectMessage.style.display = 'none';
-       }
-   }
-
-   // Function to add call field to the table in Calls Export component
-   function addCallFieldToTable() {
-       var callAddFieldSelect = document.getElementById('callAddFieldSelect');
-       var field = callAddFieldSelect.value;
-
-       var type = 'text'; // Default type
-
-       // Add a new row to the table if a field is selected
-       if (field) {
-           var table = document.getElementById('callFieldMappingTable').getElementsByTagName('tbody')[0];
-           var newRow = table.insertRow();
-           var iconCell = newRow.insertCell(0);
-           var fieldCell = newRow.insertCell(1);
-           var groupCell = newRow.insertCell(2);
-           var typeCell = newRow.insertCell(3);
-           var deleteCell = newRow.insertCell(4);
-
-           iconCell.innerHTML = '<i class="bi bi-grip-vertical"></i>';
-           fieldCell.textContent = field;
-           groupCell.textContent = 'Call'; // Assuming all fields belong to the "Call" group
-           typeCell.textContent = type;
-           deleteCell.innerHTML = '<button class="btn btn-sm" style="color: #007bff;" onclick="deleteCallRow(this)"><i class="bi bi-trash"></i></button>';
-
-           // Reset the select dropdown
-           callAddFieldSelect.selectedIndex = 0;
-       }
-   }
-
-   // Function to delete call row from table in Calls Export component
-   function deleteCallRow(btn) {
-       var row = btn.closest('tr');
-       row.parentNode.removeChild(row);
-   }
-
    // Legs ---------------->
 
    document.getElementById('continueLegsExport').addEventListener('click', function() {
@@ -3122,56 +3027,6 @@
        // Display the Attachment Export component
        document.getElementById('legsExportComponent').classList.remove('hidden');
    });
-   // Function to check selections in Legs Export component
-   function checkLegsSelections() {
-       var legsViewSelect = document.getElementById('legsViewSelect');
-       var legsTemplateSelect = document.getElementById('legsTemplateSelect');
-       // var legsViewSelectMessage = document.getElementById('legsViewSelectMessage');
-
-       if (legsViewSelect.value && legsTemplateSelect.value) {
-           document.getElementById('legsTablePlaceholder').classList.remove('d-none');
-           legsViewSelectMessage.style.display = 'block';
-           // Placeholder message; you can update this according to your logic
-           // legsViewSelectMessage.textContent = 'This view contains 5 legs.';
-       } else {
-           document.getElementById('legsTablePlaceholder').classList.add('d-none');
-           legsViewSelectMessage.style.display = 'none';
-       }
-   }
-
-   // Function to add legs field to the table in Legs Export component
-   function addLegsFieldToTable() {
-       var legsAddFieldSelect = document.getElementById('legsAddFieldSelect');
-       var field = legsAddFieldSelect.value;
-
-       var type = 'text'; // Default type
-
-       // Add a new row to the table if a field is selected
-       if (field) {
-           var table = document.getElementById('legsFieldMappingTable').getElementsByTagName('tbody')[0];
-           var newRow = table.insertRow();
-           var iconCell = newRow.insertCell(0);
-           var fieldCell = newRow.insertCell(1);
-           var groupCell = newRow.insertCell(2);
-           var typeCell = newRow.insertCell(3);
-           var deleteCell = newRow.insertCell(4);
-
-           iconCell.innerHTML = '<i class="bi bi-grip-vertical"></i>';
-           fieldCell.textContent = field;
-           groupCell.textContent = 'Leg'; // Assuming all fields belong to the "Leg" group
-           typeCell.textContent = type;
-           deleteCell.innerHTML = '<button class="btn btn-sm" style="color: #007bff;" onclick="deleteLegsRow(this)"><i class="bi bi-trash"></i></button>';
-
-           // Reset the select dropdown
-           legsAddFieldSelect.selectedIndex = 0;
-       }
-   }
-
-   // Function to delete legs row from table in Legs Export component
-   function deleteLegsRow(btn) {
-       var row = btn.closest('tr');
-       row.parentNode.removeChild(row);
-   }
 
    // DatePicker (select and pass start_date and end_date)
    var start_time = moment().subtract(1, 'days').format('YYYY-MM-DD');
@@ -3206,6 +3061,7 @@
 <script src="js/user/search_based_users.js"></script>
 <script src="js/attachments/time_based_attachments.js"></script>
 <script src="js/organization/organizations.js"></script>
+<script src="js/calls/calls_legs.js"></script>
 <script>
     //showLoader();
 

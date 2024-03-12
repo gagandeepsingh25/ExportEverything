@@ -11,14 +11,10 @@ async function checkCommentSelections(){
         showLoader();
         document.getElementById('commentTablePlaceholder').classList.remove('d-none');
 
-        console.log('comment_start_time-', start_time)
-        console.log('comment_end_time', end_time)
-
         var t_start = ticketformatDateToUnixTimestamp(start_time);
         var t_end = ticketformatDateToUnixTimestamp(end_time);
 
         tickets_data = await commentInfo(t_start, t_end)
-        console.log('tickets_data-------', tickets_data)
         if (tickets_data && tickets_data.length) {
             hideLoader();
             var viewSelectMessage = $('#commentSelectMessage');
@@ -58,8 +54,6 @@ function addCommentFieldToTable() {
     var field_val = selectedOption.value;
     var field = selectedOption.text;
     var type = 'text';
-
-    //console.log('field_val--', field_val)
 
     if (fieldClass.toLowerCase().includes('c-comment')) {
         commentValuesArray.push(field_val);
@@ -148,7 +142,6 @@ async function commentInfo(start, end) {
             type: 'GET',
             dataType: 'json',
         };
-        console.log('url--', url);
         const data = await client.request(settings);
         const ticketsArray = data['tickets'];
 
@@ -167,7 +160,6 @@ async function commentInfo(start, end) {
     } catch (error) {
         console.error('Error fetching comments ticket info:---', error);
     }
-    console.log('Updated_Array===',Updated_Array)
     return Updated_Array;
 }
 
@@ -180,7 +172,6 @@ async function fetchCommentData(id) {
             type: 'GET',
             dataType: 'json',
         };
-        //console.log('url--', url);
         const Data = await client.request(settings);
         commentsData = Data['comments'];
     } catch (error) {
@@ -198,7 +189,6 @@ async function fetchAuditsData(id) {
             type: 'GET',
             dataType: 'json',
         };
-        //console.log('url--', url);
         const data = await client.request(settings);
         auditData = data['audits'];
     } catch (error) {
@@ -210,13 +200,11 @@ async function fetchAuditsData(id) {
 
 // Function to create a CSV file from selected fields
 async function createCommentsContent(tickets_data, dict) {
-    console.log('i am here....', tickets_data, dict);
     try {
         var selectedFieldsArray = [];
 
         for (var i = 0; i < tickets_data.length; i++) {
             var ticket = tickets_data[i];
-            console.log('Comment Ticket-----', ticket);
 
             var selectedFieldsObject = {};
 
@@ -295,11 +283,9 @@ async function createCommentsContent(tickets_data, dict) {
             }
             selectedFieldsArray.push(selectedFieldsObject);
         }
-//        console.log('selectedFieldsArray--', selectedFieldsArray)
 //        // Convert the arrays to CSV format
 //        var csv = convertArrayOfObjectsToCSV(selectedFieldsArray);
 //        downloadCSV(csv, 'ticket-export.csv');
-        console.log("Selected Template:", selected_template);
         if (selected_template == 'JSON'){
             // Convert the arrays to JSON format
             var jsonContent = JSON.stringify(selectedFieldsArray, null, 2);
@@ -333,11 +319,7 @@ async function createCommentsContent(tickets_data, dict) {
 // Add an event listener to the "Export" button
 document.getElementById('comment_export_Button').addEventListener('click', async function () {
     try {
-        console.log('onclick comment export button:');
         addCommentFieldToTable();
-        console.log('comment dict data which one you select(fields)', dict);
-
-        console.log('comment ticket api data your tickets:',tickets_data);
         await createCommentsContent(tickets_data, dict);
     } catch (error) {
         console.error('Error fetching onclick comments export button:', error);

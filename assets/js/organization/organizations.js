@@ -23,10 +23,8 @@ async function checkOrganizationSelections() {
 
          try {
             const query = viewSelect.value;
-            const result = await searchOrganizationData(zendesk_domain, username, token, query);
-
+            const result = await searchOrganizationData(query);
             Search_Org_Data = result.org_data;
-            console.log('Search_Org_Data search--', Search_Org_Data);
         } catch (error) {
             console.error('Error fetching search org data:', error);
         }
@@ -131,10 +129,9 @@ function deleteOrgRow(btn) {
 }
 
 
-async function searchOrganizationData(zendesk_domain, username, token, query) {
+async function searchOrganizationData(query) {
     query = query.toString();
     showLoader();
-    console.log('Search Query:-', query);
 
     if (!query) {
         console.error('Invalid search query. Please provide a valid query.');
@@ -142,7 +139,7 @@ async function searchOrganizationData(zendesk_domain, username, token, query) {
         return Promise.reject('Invalid search query.');
     }
 
-    const auth = `Basic ${btoa(`${username}/token:${token}`)}`;
+    const auth = `Basic ${btoa(`${username}/token:${tok}`)}`;
     const headers = {
         Authorization: auth,
         'Content-Type': 'application/json',
@@ -158,7 +155,6 @@ async function searchOrganizationData(zendesk_domain, username, token, query) {
 
         hideLoader();
         const o_d = response['results'];
-        console.log('##########for test ##############', o_d);
         if (response && response.results.length) {
             const searchSelectMessage = $('#searchOrgSelectMessage');
             const lengthMessage = 'This view contains ' + response.results.length + ' organizations.';
@@ -168,6 +164,7 @@ async function searchOrganizationData(zendesk_domain, username, token, query) {
             const lengthMessage = 'This view contains 0 organizations.';
             searchSelectMessage.text(lengthMessage).show();
         }
+
         return user_data = { 'org_data': o_d};
     } catch (error) {
         hideLoader();
@@ -175,47 +172,12 @@ async function searchOrganizationData(zendesk_domain, username, token, query) {
         return Promise.reject(error); // Reject with the error
     }
 }
-//
-//function searchOrganizationData(zendesk_domain, username, token, query) {
-//    showLoader();
-//    return new Promise((resolve, reject) => {
-//        $.ajax({
-//            url: 'https://2047-223-178-208-60.ngrok-free.app/search_organization/?zendesk_domain=' + zendesk_domain + '&username=' + username +
-//                '&token=' + token + '&query=' + query,
-//            type: 'GET',
-//            contentType: 'application/json',
-//            success: function (data) {
-//                hideLoader();
-//                if (data && data.length) {
-//                    var searchOrgSelectMessage = $('#searchOrgSelectMessage');
-//                    var lengthMessage = 'This view contains' + data.length + '   organizations.';
-//                    searchOrgSelectMessage.text(lengthMessage).show();
-//                } else {
-//                    var searchOrgSelectMessage = $('#searchOrgSelectMessage');
-//                    var lengthMessage = 'This view contains 0 organizations.';
-//                    searchOrgSelectMessage.text(lengthMessage).show();
-//                }
-//                resolve(data);
-//            },
-//            error: function (xhr, status, error) {
-//                hideLoader();
-//                console.error('Error fetching search organization data:', error);
-//                reject(error);
-//            }
-//        });
-//    });
-//}
-
-
 // Function to create a CSV file from selected fields
 async function createOrganizationContent(Search_Org_Data, dict) {
-    console.log('i am here....', Search_Org_Data, dict);
     try {
         var selectedFieldsArray = [];
         for (var i = 0; i < Search_Org_Data.length; i++) {
             var org = Search_Org_Data[i];
-            console.log('org-----', org);
-
             var selectedFieldsObject = {};
 
             // ***************************************************
@@ -243,12 +205,10 @@ async function createOrganizationContent(Search_Org_Data, dict) {
 
             selectedFieldsArray.push(selectedFieldsObject);
         }
-//        console.log('selectedFieldsArray--', selectedFieldsArray)
 //        // Convert the arrays to CSV format
 //        var csv = convertArrayOfObjectsToCSV(selectedFieldsArray);
 //        downloadCSV(csv,'ticket-export.csv');
 
-        console.log("Selected Template:", selected_template);
         if (selected_template == 'JSON'){
             // Convert the arrays to JSON format
             var jsonContent = JSON.stringify(selectedFieldsArray, null, 2);
@@ -281,11 +241,7 @@ async function createOrganizationContent(Search_Org_Data, dict) {
 // Add an event listener to the "Export" button
 document.getElementById('search_org_export_Button').addEventListener('click', async function () {
     try {
-        console.log('search based Organization onclick users export button:');
         addOrganizationFieldToTable();
-        console.log('search based Organization dict data which one you select(fields)', dict);
-
-        console.log('search based Organization data api data your tickets:',Search_Org_Data);
         await createOrganizationContent(Search_Org_Data, dict);
     } catch (error) {
         console.error('Error fetching onclick search based Organization export button:', error);
@@ -306,14 +262,10 @@ async function checkOrganizationSelections_time() {
     if (orgViewSelect.value) {
         showLoader();
         document.getElementById('OrgTimeTablePlaceholder').classList.remove('d-none');
-        console.log('organization_start_time-', start_time)
-        console.log('organization_end_time', end_time)
-
         var t_start = ticketformatDateToUnixTimestamp(start_time);
         var t_end = ticketformatDateToUnixTimestamp(end_time);
 
         Search_Org_Data = await fetchTimeBasedOrganizationData(t_start, t_end)
-        console.log('Search_Org_Data time------', Search_Org_Data)
         if (Search_Org_Data && Search_Org_Data.length) {
             hideLoader();
             var viewSelectMessage = $('#timeOrgSelectMessage');
@@ -341,13 +293,11 @@ async function fetchTimeBasedOrganizationData(start, end) {
             type: 'GET',
             dataType: 'json',
         };
-        console.log('url--', url);
         const data = await client.request(settings);
         organizationsArray = data['organizations'];
     } catch (error) {
         console.error('Error fetching org ticket info:---', error);
     }
-    console.log('organizationsArray===', organizationsArray)
     return organizationsArray;
 }
 
@@ -446,11 +396,7 @@ function deleteTimeOrgRow(btn) {
 // Add an event listener to the "Export" button
 document.getElementById('time_org_export_Button').addEventListener('click', async function () {
     try {
-        console.log('time based Organization onclick users export button:');
         addOrganizationFieldToTable_time();
-        console.log('time based Organization dict data which one you select(fields)', dict);
-
-        console.log('time based Organization data api data your tickets:',Search_Org_Data);
         await createOrganizationContent(Search_Org_Data, dict);
     } catch (error) {
         console.error('Error fetching onclick time based Organization export button:', error);

@@ -13,14 +13,11 @@ async function checkAttachmentSelections() {
         showLoader();
         document.getElementById('attachmentTablePlaceholder').classList.remove('d-none');
 
-        console.log('attachments_time_start-', start_time)
-        console.log('attachments_time_end-', end_time)
 
         var t_start = ticketformatDateToUnixTimestamp(start_time);
         var t_end = ticketformatDateToUnixTimestamp(end_time);
 
         attachments_data = await AttachCommentInfo(t_start, t_end)
-        console.log('attachments_data-------', attachments_data)
         if (attachments_data && attachments_data.length) {
             hideLoader();
             var viewSelectMessage = $('#attachSelectMessage');
@@ -147,7 +144,6 @@ async function AttachCommentInfo(start, end) {
             type: 'GET',
             dataType: 'json',
         };
-        console.log('url--', url);
         const data = await client.request(settings);
         const ticketsArray = data['tickets'];
 
@@ -177,7 +173,6 @@ async function AttachmentCommentData(id) {
             type: 'GET',
             dataType: 'json',
         };
-        console.log('url--', url);
         const Data = await client.request(settings);
         commentsData = Data['comments'];
         for (var i = 0; i < commentsData.length; i++) {
@@ -206,7 +201,6 @@ async function AttachmentCommentData(id) {
 //            type: 'GET',
 //            dataType: 'json',
 //        };
-//        console.log('url--', url);
 //        const Data = await client.request(settings);
 //        AmentData = Data['attachment'];
 //    } catch (error) {
@@ -218,14 +212,12 @@ async function AttachmentCommentData(id) {
 
 // Function to create a CSV file from selected fields
 async function createAttachmentContent(attachments_data, dict) {
-    console.log('i am here....');
     try {
         var selectedFieldsArray = [];
         for (var i = 0; i < attachments_data.length; i++) {
             try {
                 var ticket = attachments_data[i];
 
-                console.log('Attachment Ticket-----');
                 var selectedFieldsObject = {};
                 // ***************************************************
                 // attachment data
@@ -262,7 +254,6 @@ async function createAttachmentContent(attachments_data, dict) {
 //        var csv = convertArrayOfObjectsToCSV(selectedFieldsArray);
 //        downloadCSV(csv, 'ticket-export.csv');
 
-        console.log("Selected Template:", selected_template);
         if (selected_template == 'JSON'){
             // Convert the arrays to JSON format
             var jsonContent = JSON.stringify(selectedFieldsArray, null, 2);
@@ -297,11 +288,7 @@ async function createAttachmentContent(attachments_data, dict) {
 // Add an event listener to the "Export" button
 document.getElementById('attachment_export_Button').addEventListener('click', async function () {
     try {
-        console.log('onclick attachment export button:');
         addAttachmentFieldToTable();
-        console.log('attachment dict data which one you select(fields)', dict);
-
-        console.log('attachment data api data your tickets:', attachments_data);
         await createAttachmentContent(attachments_data, dict);
     } catch (error) {
         console.error('Error fetching onclick attachment export button:', error);
