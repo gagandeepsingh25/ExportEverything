@@ -33,6 +33,7 @@ Promise.all([
   checkUserPresence();
   document.getElementById('emailAddress').value = username;
   document.getElementById('subdomains').value = subdomain;
+  document.getElementById('subdomains_div').innerHTML = subdomain;
   // Call the function to fetch the API key
 
 })

@@ -1,8 +1,8 @@
 {
   "name": "Export Everything",
   "author": {
-    "name": "Atul Seth",
-    "email": "info@bluerockapps.com",
+    "name": "Export Everything",
+    "email": "support@bluerockapps.com",
     "url": "https://bluerockapps.co/"
   },
   "defaultLocale": "en",
@@ -13,10 +13,7 @@
       "nav_bar": "assets/index.html"
     }
   },
-  "icon": {
-    "dark": "assets/logo.svg",
-    "light": "assets/logo.svg"
-  },
   "version": "1.0",
-  "frameworkVersion": "2.0"
+  "frameworkVersion": "2.0",
+  "termsConditionsURL": "https://bluerockapps.co/terms-conditions/"
 }

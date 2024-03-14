@@ -425,21 +425,18 @@
 
                     <div class="mb-3">
                         <label for="subdomains" class="form-label">Subdomain*</label>
-                        <input type="text" name="subdomains" class="form-control" id="subdomains"
-                               placeholder="subdomain" required readonly>
-
+                        <div id="subdomains_div" style="font-size: 15px; margin-left: 20px; color:#9a9c9d;"> </div>
+                        <input type="hidden" name="subdomains" class="form-control" id="subdomains"
+                                   placeholder="subdomain" required readonly>
                         <input type="hidden" name="plan" class="form-control" id="plan"
-                               placeholder="plan" value="plan">
-
-                        <p style="font-size: 10px; color: #919191;">webtunixsupport</p>
+                                   placeholder="plan" value="plan">
                     </div>
-
                     <div class="mb-4">
                         <label for="additionalInfo" class="form-label">Additional information*</label>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="additionalInfo" checked disabled>
                             <label style="font-size: 12px;" class="form-check-label" for="additionalInfo">
-                                Zendesk Subscription: Professional<br>
+                                Zendesk Subscription<br>
                                 Number of agents: 1<br>
                                 Number of apps: 1
                             </label>
