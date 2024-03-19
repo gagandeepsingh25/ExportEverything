@@ -17,6 +17,11 @@ Promise.all([
         const firstInstanceKey = instanceKeys[0];
         subdomain = data.instances[firstInstanceKey].account.subdomain;
 
+        //document.getElementById('subdomains').value = subdomain;
+        //document.getElementById('subdomains_div').innerHTML = subdomain;
+
+        checkUserPresence();
+
         // Log the subdomain
 
         zendesk_domain = 'https://' + subdomain + '.zendesk.com';
@@ -28,18 +33,69 @@ Promise.all([
     .catch((error) => {
       console.error('Error fetching data from Zendesk:', error);
     })
-]).then(() => {
-  // Now both API calls have completed
-  checkUserPresence();
-  document.getElementById('emailAddress').value = username;
-  document.getElementById('subdomains').value = subdomain;
-  document.getElementById('subdomains_div').innerHTML = subdomain;
-  // Call the function to fetch the API key
-
-})
-.catch((error) => {
+]).catch((error) => {
   // Handle errors that might occur in any of the promises
   console.error('Error:', error);
+});
+
+//*************************************************************************************************************
+// Add event listener for blur event on the email field
+var eValidate = false;
+document.getElementById('emailAddress').addEventListener('blur', function() {
+    // Validate the email address
+    var userEmail = this.value;
+    if (userEmail !== '') {
+        if (!validateEmail(userEmail) || userEmail.toLowerCase() !== username) {
+            // Display validation message
+            var validationMessage = document.getElementById("validationMessage");
+            validationMessage.innerHTML = "Email does not belong to agent";
+            validationMessage.style.color = "red";
+            eValidate = false;
+        } else {
+            // Clear validation message if email is valid
+            var validationMessage = document.getElementById("validationMessage");
+            validationMessage.innerHTML = "";
+            eValidate = true;
+        }
+    }
+});
+
+// Function to validate email address
+function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+}
+
+
+//*************************************************************************************************************
+ // Add event listener for blur event on the subdomain field
+var dValidate = false;
+document.getElementById('subdomains').addEventListener('blur', function() {
+    var userDomain = this.value.trim();
+    if (userDomain !== '') {
+        if (userDomain.toLowerCase() !== subdomain.toLowerCase()) {
+            var validationMessage = document.getElementById("DomainValidationMessage");
+            validationMessage.innerHTML = "Subdomain does not belong to agent";
+            validationMessage.style.color = "red";
+            dValidate = false;
+        } else {
+            var validationMessage = document.getElementById("DomainValidationMessage");
+            validationMessage.innerHTML = "";
+            dValidate = true;
+        }
+    }
+});
+
+
+// Add event listener for click event on the checkbox
+document.getElementById('radio_subdomains').addEventListener('click', function() {
+    if (this.checked) {
+        document.getElementById('subdomains').value = subdomain;
+        var validationMessage = document.getElementById("DomainValidationMessage");
+        validationMessage.innerHTML = "";
+    } else {
+        document.getElementById('subdomains').value = "";
+    }
 });
 
 //*************************************************************************************************************
@@ -93,8 +149,14 @@ function showActivationButton() {
 
 // Function to handle form submission
 function handleFormSubmit(event) {
-    showLoader();
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();
+    if (!eValidate) {
+        return;
+    }
+    if (!dValidate) {
+        return;
+    }
+    showLoader(); // Prevent the default form submission behavior
 
     var form = event.target; // Get the form element
     var formData = new FormData(form); // Create FormData object from the form
@@ -231,7 +293,6 @@ function addFieldToTable() {
     if (userPlan != 'price_1OrGDzJmsaQyNnzsd5Y8sJmx' && userPlan != 'price_1OrGDyJmsaQyNnzsd5rJXUM9') {
         // Check if more than 12 fields have been selected
         if (countSelectedFields() >= 12) {
-            alert('You can only select up to 12 fields with this plan.');
             return;
         }
     }

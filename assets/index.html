@@ -420,17 +420,25 @@
                     <div class="mb-3">
                         <label for="emailAddress" class="form-label">Email address*</label>
                         <input type="email" name="email" class="form-control" id="emailAddress"
-                               placeholder="Email address" required readonly>
+                               placeholder="Email address" required>
+                        <span id="validationMessage" style="color: red;"></span>
                     </div>
 
                     <div class="mb-3">
                         <label for="subdomains" class="form-label">Subdomain*</label>
-                        <div id="subdomains_div" style="font-size: 15px; margin-left: 20px; color:#9a9c9d;"> </div>
-                        <input type="hidden" name="subdomains" class="form-control" id="subdomains"
-                                   placeholder="subdomain" required readonly>
+                        <div id="subdomains_div" style="font-size: 15px; margin-left: 20px; color:#9a9c9d; display:none;"> </div>
+                        <input name="subdomains" class="form-control" id="subdomains"
+                                   placeholder="subdomain" required>
                         <input type="hidden" name="plan" class="form-control" id="plan"
                                    placeholder="plan" value="plan">
+                        <span id="DomainValidationMessage" style="color: red;"></span>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="radio_subdomains" class="form-label">AutoFill Subdomain</label>
+                        <input type="checkbox" name="subdomains" class="form-check-input" id="radio_subdomains">
+                    </div>
+
                     <div class="mb-4">
                         <label for="additionalInfo" class="form-label">Additional information*</label>
                         <div class="form-check">
