@@ -93,8 +93,10 @@ document.getElementById('radio_subdomains').addEventListener('click', function()
         document.getElementById('subdomains').value = subdomain;
         var validationMessage = document.getElementById("DomainValidationMessage");
         validationMessage.innerHTML = "";
+        dValidate = true;
     } else {
         document.getElementById('subdomains').value = "";
+        dValidate = false;
     }
 });
 
