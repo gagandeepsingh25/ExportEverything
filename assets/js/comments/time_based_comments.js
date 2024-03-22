@@ -18,7 +18,7 @@ async function checkCommentSelections(){
         if (tickets_data && tickets_data.length) {
             hideLoader();
             var viewSelectMessage = $('#commentSelectMessage');
-            var lengthMessage = 'This view contains' + tickets_data.length + ' comments.';
+            var lengthMessage = 'This view contains ' + tickets_data.length + ' comments.';
             viewSelectMessage.text(lengthMessage).show();
         } else {
             hideLoader();

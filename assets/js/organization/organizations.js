@@ -4,7 +4,6 @@ var dict = {};
 
 // ************************************** search bases organizations *********************************************
 // // -----------------Organization ---------------------
-
 // Function to check selections in organization export
 async function checkOrganizationSelections() {
     const viewSelect = document.getElementById('OrgQuery');

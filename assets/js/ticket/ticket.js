@@ -23,7 +23,6 @@ Promise.all([
         checkUserPresence();
 
         // Log the subdomain
-
         zendesk_domain = 'https://' + subdomain + '.zendesk.com';
 
       } else {
@@ -33,8 +32,9 @@ Promise.all([
     .catch((error) => {
       console.error('Error fetching data from Zendesk:', error);
     })
-]).catch((error) => {
-  // Handle errors that might occur in any of the promises
+]).then(() => {
+  checkUserPresence();
+}).catch((error) => {
   console.error('Error:', error);
 });
 
@@ -65,8 +65,6 @@ function validateEmail(email) {
     var re = /\S+@\S+\.\S+/;
     return re.test(email);
 }
-
-
 //*************************************************************************************************************
  // Add event listener for blur event on the subdomain field
 var dValidate = false;
@@ -85,7 +83,6 @@ document.getElementById('subdomains').addEventListener('blur', function() {
         }
     }
 });
-
 
 // Add event listener for click event on the checkbox
 document.getElementById('radio_subdomains').addEventListener('click', function() {
@@ -993,6 +990,7 @@ function downloadJSON(jsonContent, filename) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    hideLoader();
 }
 
 // Function to trigger the download of the CSV file
@@ -1005,6 +1003,7 @@ function downloadCSV(csv, filename) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    hideLoader();
 }
 
 // Function to convert an array of objects to CSV format
@@ -1054,6 +1053,7 @@ async function commentCount(id) {
 // Add an event listener to the "Export" button
 document.getElementById('exportButton').addEventListener('click', async function () {
     try {
+        showLoader();
         addFieldToTable();
         await createContent(ticket_api_data, dict);
     } catch (error) {
@@ -1242,6 +1242,7 @@ function addFieldToTable_search() {
 // Add an event listener to the "Export" button
 document.getElementById('exportButton_search').addEventListener('click', async function () {
     try {
+        showLoader();
         addFieldToTable_search();
         await createContent(ticket_api_data, dict);
     } catch (error) {
@@ -1414,6 +1415,7 @@ function addFieldToTable_time() {
 // Add an event listener to the "Export" button
 document.getElementById('exportButton_time').addEventListener('click', async function () {
     try {
+        showLoader();
         addFieldToTable_time();
         await createContent(ticket_api_data, dict);
     } catch (error) {
@@ -1434,6 +1436,7 @@ function downloadXML(xml, filename) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    hideLoader();
 }
 
 // Function to convert an array of objects to XML format
