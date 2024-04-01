@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zendesk</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           crossorigin="anonymous">
@@ -2260,7 +2261,7 @@
                             </ul>
                             <div class="d-grid gap-2" style="margin-top: 40px;">
                                 <button class="btn" style="background-color:
-                   #17494d; color: #e9ecef; width: 150px;border-radius: 0;"><a href="https://buy.stripe.com/test_eVa9Do3XC54E1z2dQR" target="_blank">Talk to Sales</a>
+                   #17494d; color: #e9ecef; width: 150px;border-radius: 0;"><a href="https://bluerockapps.co/" target="_blank">Talk to Sales</a>
                                 </button>
                             </div>
                         </div>
@@ -2270,7 +2271,7 @@
                 <!-- Gold Plan -->
                 <div class="col-md-3 g-2">
                     <div id="enterprisePlan" class="card h-100 plan-card"
-                         style="border: none;background-color: '';border-radius: 0;margin-inline: 2px;">
+                         style="border-radius: 0;border: none; background-color: #f7f7f7; margin-inline: 2px;">
                         <p class="text-light"
                            style="font-size: 10px; margin:auto; padding: 4px; margin-top: -10px; background-color: #2995a8; width: max-content; display: none;">
                             Current Plan</p>
@@ -2292,7 +2293,7 @@
                             <div class="d-grid gap-2">
                                 <button class="btn"
                                         style="background-color:#17494d; color: #e9ecef; width: 150px;border-radius: 0;">
-                                    <a href="https://buy.stripe.com/test_3csdTE65K8gQa5yfYY" target="_blank">Talk to Sales</a>
+                                    <a href="https://bluerockapps.co/" target="_blank">Talk to Sales</a>
                                 </button>
                             </div>
                         </div>
@@ -2731,7 +2732,7 @@
    // X=======================sidebar ends here-================================X
 
    //end of  conditional rend logic
-   // slider component-------------------------------->
+   // ----------------------------- slider component -----------------------------
      function updateSliderValue(value) {
      const slider = document.getElementById('performanceSlider');
      const percentage = (value - slider.min) / (slider.max - slider.min) * 100;
@@ -2739,9 +2740,9 @@
      document.getElementById('sliderValue').textContent = value + '%';
    }
 
-   //end of slider-----------------------------------------X
+   //----------------------------- end of slider -----------------------------
 
-   // <--------------------------------start of access---------------------------->
+   //  ----------------------------- start of access -----------------------------
          //this is to handle access check box and related
      document.addEventListener('DOMContentLoaded', (event) => {
      // Function to toggle the disabled state of the corresponding select dropdown
@@ -2761,10 +2762,10 @@
          toggleSelect('groupRestrictions', 'groupRestrictionsSelect');
      });
    });
-   //X-----------------------------------------------end of access-------------------------X
+   //----------------------------- end of access -----------------------------
 
 
-   // <----------------------------template--------------------------------------------------->
+   //  ----------------------------- template -----------------------------
    // this is for handling templates section
    document.addEventListener('DOMContentLoaded', (event) => {
      // Get the radio buttons
@@ -2783,34 +2784,31 @@
              }
          });
      }
+       // Event listener for the Active radio button
+       activeRadio.addEventListener('change', () => {
+           if (activeRadio.checked) {
+              filterTemplates(true);
+           }
+       });
 
+       // Event listener for the Inactive radio button
+         inactiveRadio.addEventListener('change', () => {
+             if (inactiveRadio.checked) {
+                 filterTemplates(false);
+             }
+       });
+   });
 
-   // Event listener for the Active radio button
-             activeRadio.addEventListener('change', () => {
-                 if (activeRadio.checked) {
-                     filterTemplates(true);
-                 }
-             });
-
-             // Event listener for the Inactive radio button
-             inactiveRadio.addEventListener('change', () => {
-                 if (inactiveRadio.checked) {
-                     filterTemplates(false);
-                 }
-             });
-
-     });
    //end of templates section
-      document.addEventListener('DOMContentLoaded', function () {
-      const addTemplateButton = document.getElementById('addTemplateButton');
-      const tabs = new bootstrap.Tab(document.getElementById('active-tab'));
+  document.addEventListener('DOMContentLoaded', function () {
+  const addTemplateButton = document.getElementById('addTemplateButton');
+  const tabs = new bootstrap.Tab(document.getElementById('active-tab'));
 
 
-      addTemplateButton.addEventListener('click', function () {
+  addTemplateButton.addEventListener('click', function () {
    // Your logic for the "Add Template" button click event
           console.log("Adding a new template...");
       });
-
       tabs.show();
    });
 
@@ -2843,13 +2841,10 @@
        });
    });
 
-   // X---------------------------------template---------------------------------------X
+   // ----------------------------- template -----------------------------
 
-
-
-   // -----------------subscription plan ------------------------------------------>
+   // ------------------------------ subscription plan -----------------------------
    const planCards = document.querySelectorAll('.plan-card');
-
    planCards.forEach(card => {
        card.addEventListener('click', () => {
            planCards.forEach(otherCard => {
@@ -2866,23 +2861,19 @@
        });
    });
 
-   const defaultPlan = document.getElementById('enterprisePlan');
-   defaultPlan.querySelector('.text-light').style.display = 'block';
-   defaultPlan.style.border = '2px solid #2995a8'; // Set border for the default plan
-   defaultPlan.querySelector('.btn').style.display = 'none';
+   //const defaultPlan = document.getElementById('enterprisePlan');
+   //defaultPlan.querySelector('.text-light').style.display = 'block';
+   //defaultPlan.style.border = '2px solid #2995a8'; // Set border for the default plan
+   //defaultPlan.querySelector('.btn').style.display = 'none';
+   // ------------------------------subscription plan ends here----------------------
 
 
-   // ------------------------------subscription plan ends here----------------------X
-
-
-   // -------------------------activation---------------------------------------//
-                 //activation code part is here
-                 function loadNewComponent() {
+   // -------------------------activation---------------------------------------
+   //activation code part is here
+   function loadNewComponent() {
          // Logic to remove the current component and load the new one
          // // For now, we will just hide the current component
          // document.getElementById('activationComponent').style.display = 'none';
-
-
 
          // // Placeholder for the new component's code
          // // You'll replace this with the actual code needed to display the new component
@@ -2891,7 +2882,7 @@
          //   const newComponent = document.getElementById('exportDataForm');
          // newComponent.style.display = 'block'; // Or 'flex' if you're using Flexbox for the layout
          showComponent('exportDataForm')
-     }
+   }
 
     // Event listener for the form submission
      document.getElementById('activationForm').addEventListener('submit', function(e) {
@@ -2919,17 +2910,15 @@
        });
 
       document.getElementById('continueTimeBased').addEventListener('click', function() {
-       // Hide the current exxport t componets
-       document.getElementById('tickets').style.display = 'none';
-       // Display the component with tables
-       showComponent('ticketExportComponentTime');
+           // Hide the current exxport t componets
+           document.getElementById('tickets').style.display = 'none';
+           // Display the component with tables
+           showComponent('ticketExportComponentTime');
+      });
    });
 
-   });
 
-   // ------------------------tickets and export end -----------------------------
-
-   //   <-- Settings component logic-------------------------->
+   // ------------------------ Settings component logic -------------------------
    function toggleMemoryLimitSelect() {
            var checkbox = document.getElementById("memoryLimitCheckbox");
            var selectContainer = document.getElementById("memoryLimitSelectContainer");
@@ -2939,9 +2928,8 @@
                selectContainer.style.display = "none";
            }
        }
-   // -------------Settings Component--------------------
 
-   // ----Comment component logic-----------------------
+   // ------------------------ Comment component logic -----------------------
    document.addEventListener('DOMContentLoaded', function() {
        const startDateInput = document.getElementById('startDate');
        const endDateInput = document.getElementById('endDate');
@@ -3006,7 +2994,6 @@
    });
 
 
-
    // -----------------------------attachment -----------------------------
    // Add event listener to the "Continue" button for attachment export
    document.getElementById('continueAttachmentExport').addEventListener('click', function() {
@@ -3015,10 +3002,8 @@
        // Display the Attachment Export component
        document.getElementById('attachmentExportComponent').classList.remove('hidden');
    });
-   // -----------------------------attachment -----------------------------
 
-
-   // calllss-------------------------------->
+   // ------------------------ calls -----------------------------
    document.getElementById('continueCallsExport').addEventListener('click', function() {
        // Hide the current component
        document.getElementById('calls').classList.add('hidden');
@@ -3026,7 +3011,7 @@
        document.getElementById('callsExportComponent').classList.remove('hidden');
    });
 
-   // Legs ---------------->
+   // ----------------------------- Legs -----------------------------
 
    document.getElementById('continueLegsExport').addEventListener('click', function() {
        // Hide the current component
@@ -3055,21 +3040,7 @@
        }
      });
    });
-
-</script>
-
-<!---------------------------------------  Activation button javascript code  ----------------------------->
-
-<!--------------------------------------- end Activation button javascript code  ----------------------------->
-
-
-<script src="js/ticket/ticket.js"></script>
-<script src="js/comments/time_based_comments.js"></script>
-<script src="js/user/search_based_users.js"></script>
-<script src="js/attachments/time_based_attachments.js"></script>
-<script src="js/organization/organizations.js"></script>
-<script src="js/calls/calls_legs.js"></script>
-<script>
+   // ----------------------------- Loaders -----------------------------
     //showLoader();
 
     function showLoader() {
@@ -3080,4 +3051,10 @@
       document.getElementById('loader-outer').style.display = 'none';
     }
 </script>
+<script src="js/ticket/ticket.js"></script>
+<script src="js/comments/time_based_comments.js"></script>
+<script src="js/user/search_based_users.js"></script>
+<script src="js/attachments/time_based_attachments.js"></script>
+<script src="js/organization/organizations.js"></script>
+<script src="js/calls/calls_legs.js"></script>
 </html>

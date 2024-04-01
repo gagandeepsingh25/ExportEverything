@@ -225,8 +225,13 @@ function checkUserPresence() {
                 hideActivationButton();
                 showSupportNavItems();
                userPlan = data.data.plan;
-//               if (userPlan == 'price_1OrFX8JmsaQyNnzsnVEyVklH'){ // silver plan test
+//               if (userPlan == 'price_1OrFX8JmsaQyNnzsnVEyVklH'){ // testing
                if (userPlan == 'price_1OrGDzJmsaQyNnzsd5Y8sJmx'){ // silver plan
+
+                    var silverPlan = document.getElementById('professionalPlan');
+                    silverPlan.querySelector('.text-light').style.display = 'block';
+                    silverPlan.style.border = '2px solid #2995a8';
+                    silverPlan.querySelector('.btn').style.display = 'none';
 
                     talkDiv.setAttribute("onclick", "return false");
                     talkDiv.classList.add("disabled-div");
@@ -235,11 +240,22 @@ function checkUserPresence() {
                     silver.forEach(function(element) {
                         element.classList.add("disabled");
                     });
-//               }else if (userPlan == 'price_1OrFX8JmsaQyNnzsPLM7pjI8'){ // gold plan test
+
+//               }else if (userPlan == 'price_1OrFX8JmsaQyNnzsPLM7pjI8'){ // testing
                }else if (userPlan == 'price_1OrGDyJmsaQyNnzsd5rJXUM9'){ // gold plan
-                  talkDiv.setAttribute("onclick", "showTalkNavItems()");
-                  talkDiv.classList.remove("disabled-div");
+
+                    var goldPlan = document.getElementById('enterprisePlan');
+                    goldPlan.querySelector('.text-light').style.display = 'block';
+                    goldPlan.style.border = '2px solid #2995a8';
+                    goldPlan.querySelector('.btn').style.display = 'none';
+
+                    talkDiv.setAttribute("onclick", "showTalkNavItems()");
+                    talkDiv.classList.remove("disabled-div");
                }else{
+                    var freePlan = document.getElementById('freePlan');
+                    freePlan.querySelector('.text-light').style.display = 'block';
+                    freePlan.style.border = '2px solid #2995a8';
+                    freePlan.querySelector('.btn').style.display = 'none';
 
                     free.forEach(function(element) {
                         element.classList.add("disabled");
@@ -266,7 +282,6 @@ function checkUserPresence() {
         hideLoader();
     }
 }
-
 // ******************************************* view based tickets START********************************************
 var ticket_api_data = [];
 
@@ -288,7 +303,7 @@ function addFieldToTable() {
 
     // ##############################
     // Check if the user's plan is neither silver nor gold
-//    if (userPlan != 'price_1OrFX8JmsaQyNnzsnVEyVklH' && userPlan != 'price_1OrFX8JmsaQyNnzsPLM7pjI8') { //test
+//    if (userPlan != 'price_1OrFX8JmsaQyNnzsnVEyVklH' && userPlan != 'price_1OrFX8JmsaQyNnzsPLM7pjI8') { //testing
     if (userPlan != 'price_1OrGDzJmsaQyNnzsd5Y8sJmx' && userPlan != 'price_1OrGDyJmsaQyNnzsd5rJXUM9') {
         // Check if more than 12 fields have been selected
         if (countSelectedFields() >= 12) {
@@ -1491,3 +1506,4 @@ function escapeXml(unsafe) {
         return unsafe;
     }
 }
+
