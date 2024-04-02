@@ -4,9 +4,17 @@ var LegsValuesArray = [];
 var calls_api_data = [];
 var legs_api_data = [];
 var dict = {};
+var selected_template;
+
 // Function to check selections in Calls Export component
-function checkCallSelections() {
+async function checkCallSelections() {
    var callTemplateSelect = document.getElementById('callTemplateSelect');
+   var tablePlaceholder = document.getElementById('callTablePlaceholder');
+
+   var selectedOption_template = callTemplateSelect.options[callTemplateSelect.selectedIndex];
+   var selectedValue_temp = selectedOption_template.value;
+
+   selected_template = selectedValue_temp;
 
    if (callTemplateSelect.value) {
        document.getElementById('callTablePlaceholder').classList.remove('d-none');
@@ -30,6 +38,7 @@ function checkCallSelections() {
        document.getElementById('callTablePlaceholder').classList.add('d-none');
    }
 }
+
 
 // Function to add call field to the table in Calls Export component
 function addCallFieldToTable() {
@@ -79,10 +88,51 @@ function addCallFieldToTable() {
 }
 
 // Function to delete call row from table in Calls Export component
+//function deleteCallRow(btn) {
+//   var row = btn.closest('tr');
+//   row.parentNode.removeChild(row);
+//}
+
+
 function deleteCallRow(btn) {
-   var row = btn.closest('tr');
-   row.parentNode.removeChild(row);
+    // Find the row and remove it
+    var row = btn.closest('tr');
+
+    // Get the field value from the first cell of the row
+    var fieldValue = row.cells[0].textContent.trim();
+
+    // Show the corresponding option in the select element
+    var addFieldSelect = document.getElementById('callAddFieldSelect');
+    // Find the selected option based on text content
+    var selectedOption;
+    for (var i = 0; i < addFieldSelect.options.length; i++) {
+        if (addFieldSelect.options[i].text === fieldValue) {
+            selectedOption = addFieldSelect.options[i];
+            break;
+        }
+    }
+
+    if (!selectedOption) {
+        console.error('Selected option not found');
+        return;
+    }
+
+    if (CallsValuesArray.includes(selectedOption.value)) {
+        var indexComment = CallsValuesArray.indexOf(selectedOption.value);
+        CallsValuesArray.splice(indexComment, 1);
+    }
+
+    dict = {
+        "CallsValuesArray": CallsValuesArray,
+    };
+
+    // Un hide the option in the select dropdown
+    selectedOption.style.display = '';
+
+    // Remove the row
+    row.parentNode.removeChild(row);
 }
+
 
 // FETCH COMMENT DATA FROM API
 async function SearchCallsInfo(t_start, t_end) {
@@ -96,7 +146,6 @@ async function SearchCallsInfo(t_start, t_end) {
         };
         const data = await client.request(settings);
         Updated_Array = data['calls'];
-
 //        for (var i = 0; i < ticketsArray.length; i++) {
 //            var ticket = ticketsArray[i];
 //            var par_dict =
@@ -125,11 +174,72 @@ async function SearchCallsInfo(t_start, t_end) {
 }
 
 
+// Function to create a CSV file from selected fields
+async function createCallsContent(calls_api_data, dict) {
+    try {
+        var selectedFieldsArray = [];
+
+        for (var i = 0; i < calls_api_data.length; i++) {
+            var ticket = calls_api_data[i];
+
+            // ***************************************************
+            var selectedFieldsObject = {};
+            // Export Ticket
+            var select_fields_data = dict['CallsValuesArray'];
+
+            for (var j = 0; j < select_fields_data.length; j++) {
+                try{
+                    var field = select_fields_data[j];
+                    if (field !== null) {
+                        if (ticket[field] !== null && ticket[field] !== undefined) {
+                            selectedFieldsObject["Calls_" + field] = '"' + ticket[field].toString() + '"';
+                        } else {
+                            selectedFieldsObject[field] = '';  // or handle the case where ticket[field] is null or undefined
+                        }
+                    } else {
+                        selectedFieldsObject[field] = '';  // or handle the case where field is null
+                    }
+                }catch (error) {
+                    console.error('Error in Calls fields:', error);
+                    continue
+                }
+            }
+            selectedFieldsArray.push(selectedFieldsObject);
+        }
+        if (selected_template == 'JSON'){
+            // Convert the arrays to JSON format
+            var jsonContent = JSON.stringify(selectedFieldsArray, null, 2);
+            if(jsonContent) {
+                downloadJSON(jsonContent, 'calls-export.json');
+            } else {
+                console.error('Error generating JSON data.');
+            }
+        }else if (selected_template == 'XML') {
+            // Convert the arrays to XML format
+            var xml = convertArrayOfObjectsToXML(selectedFieldsArray);
+            if(xml) {
+                downloadXML(xml, 'calls-export.xml');
+            } else {
+                console.error('Error generating XML data.');
+            }
+        }else{
+            var csv = convertArrayOfObjectsToCSV(selectedFieldsArray);
+            if (csv) {
+                downloadCSV(csv, 'calls-export.csv');
+            } else {
+                console.error('Error generating CSV data.');
+            }
+        }
+    } catch (error) {
+        console.error('Error in create calls Content function:', error);
+    }
+}
+
 // Add an event listener to the "Export" button
 document.getElementById('time_calls_export_Button').addEventListener('click', async function () {
     try {
         addCallFieldToTable();
-        //await createOrganizationContent(Search_Org_Data, dict);
+        await createCallsContent(calls_api_data, dict);
     } catch (error) {
         console.error('Error fetching onclick time based calls export button:', error);
     }
@@ -139,8 +249,14 @@ document.getElementById('time_calls_export_Button').addEventListener('click', as
 // ******** Legs ********
 
 // Function to check selections in Legs Export component
-function checkLegsSelections() {
+async function checkLegsSelections() {
    var legsTemplateSelect = document.getElementById('legsTemplateSelect');
+   var tablePlaceholder = document.getElementById('legsTablePlaceholder');
+
+   var selectedOption_template = callTemplateSelect.options[callTemplateSelect.selectedIndex];
+   var selectedValue_temp = selectedOption_template.value;
+
+   selected_template = selectedValue_temp;
 
    if (legsTemplateSelect.value) {
        document.getElementById('legsTablePlaceholder').classList.remove('d-none');
@@ -210,10 +326,49 @@ function addLegsFieldToTable() {
    };
 }
 
-// Function to delete legs row from table in Legs Export component
+//// Function to delete legs row from table in Legs Export component
+//function deleteLegsRow(btn) {
+//   var row = btn.closest('tr');
+//   row.parentNode.removeChild(row);
+//}
+
 function deleteLegsRow(btn) {
-   var row = btn.closest('tr');
-   row.parentNode.removeChild(row);
+    // Find the row and remove it
+    var row = btn.closest('tr');
+
+    // Get the field value from the first cell of the row
+    var fieldValue = row.cells[0].textContent.trim();
+
+    // Show the corresponding option in the select element
+    var addFieldSelect = document.getElementById('legsAddFieldSelect');
+    // Find the selected option based on text content
+    var selectedOption;
+    for (var i = 0; i < addFieldSelect.options.length; i++) {
+        if (addFieldSelect.options[i].text === fieldValue) {
+            selectedOption = addFieldSelect.options[i];
+            break;
+        }
+    }
+
+    if (!selectedOption) {
+        console.error('Selected option not found');
+        return;
+    }
+
+    if (LegsValuesArray.includes(selectedOption.value)) {
+        var indexComment = LegsValuesArray.indexOf(selectedOption.value);
+        LegsValuesArray.splice(indexComment, 1);
+    }
+
+    dict = {
+        "LegsValuesArray": LegsValuesArray,
+   };
+
+    // Un hide the option in the select dropdown
+    selectedOption.style.display = '';
+
+    // Remove the row
+    row.parentNode.removeChild(row);
 }
 
 
@@ -258,11 +413,72 @@ async function SearchLegsInfo(t_start, t_end) {
 }
 
 
+// Function to create a CSV file from selected fields
+async function createLegsContent(legs_api_data, dict) {
+    try {
+        var selectedFieldsArray = [];
+
+        for (var i = 0; i < legs_api_data.length; i++) {
+            var ticket = legs_api_data[i];
+
+            // ***************************************************
+            var selectedFieldsObject = {};
+            // Export Ticket
+            var select_fields_data = dict['LegsValuesArray'];
+
+            for (var j = 0; j < select_fields_data.length; j++) {
+                try{
+                    var field = select_fields_data[j];
+                    if (field !== null) {
+                        if (ticket[field] !== null && ticket[field] !== undefined) {
+                            selectedFieldsObject["Legs_" + field] = '"' + ticket[field].toString() + '"';
+                        } else {
+                            selectedFieldsObject[field] = '';  // or handle the case where ticket[field] is null or undefined
+                        }
+                    } else {
+                        selectedFieldsObject[field] = '';  // or handle the case where field is null
+                    }
+                }catch (error) {
+                    console.error('Error in Legs fields:', error);
+                    continue
+                }
+            }
+            selectedFieldsArray.push(selectedFieldsObject);
+        }
+        if (selected_template == 'JSON'){
+            // Convert the arrays to JSON format
+            var jsonContent = JSON.stringify(selectedFieldsArray, null, 2);
+            if(jsonContent) {
+                downloadJSON(jsonContent, 'legs-export.json');
+            } else {
+                console.error('Error generating JSON data.');
+            }
+        }else if (selected_template == 'XML') {
+            // Convert the arrays to XML format
+            var xml = convertArrayOfObjectsToXML(selectedFieldsArray);
+            if(xml) {
+                downloadXML(xml, 'legs-export.xml');
+            } else {
+                console.error('Error generating XML data.');
+            }
+        }else{
+            var csv = convertArrayOfObjectsToCSV(selectedFieldsArray);
+            if (csv) {
+                downloadCSV(csv, 'legs-export.csv');
+            } else {
+                console.error('Error generating CSV data.');
+            }
+        }
+    } catch (error) {
+        console.error('Error in create legs Content function:', error);
+    }
+}
+
 // Add an event listener to the "Export" button
 document.getElementById('time_legs_export_Button').addEventListener('click', async function () {
     try {
         addLegsFieldToTable();
-        //await createOrganizationContent(Search_Org_Data, dict);
+        await createLegsContent(legs_api_data, dict);
     } catch (error) {
         console.error('Error fetching onclick time based legs export button:', error);
     }

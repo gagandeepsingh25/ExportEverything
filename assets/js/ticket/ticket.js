@@ -24,7 +24,6 @@ Promise.all([
 
         // Log the subdomain
         zendesk_domain = 'https://' + subdomain + '.zendesk.com';
-
       } else {
         console.error('No instances found in the response.');
       }

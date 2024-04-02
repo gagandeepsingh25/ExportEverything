@@ -1994,7 +1994,7 @@
             <div class="mb-3 p-3 border rounded d-flex justify-content-between"
                  style="height: 120px; margin-top: -10px;">
                 <div>
-                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Time Based</p>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Calls Based on Time </p>
                     <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export all users that have been created
                         or updated within a certain date range.</p>
                     <p class="fs-6" style="color: #919191; font-style: italic;">High performance, no filtering.</p>
@@ -2069,7 +2069,7 @@
                     </select>
                 </div>
             </div>
-            <div class="d-flex justify-content-between" style="margin-left: 65%;position: absolute; bottom: 20px; right:20px;">
+            <div class="d-flex justify-content-between" style="margin-left: 65%; position: absolute; right:20px;">
                 <hr/>
                 <div style="gap: 5px;" class="d-flex justify-content-end mb-3">
                     <button type="button" class="btn text-primary" style="color:#0176b3  ;">Cancel</button>
@@ -2095,7 +2095,7 @@
             <div class="mb-3 p-3 border rounded d-flex justify-content-between"
                  style="height: 120px; margin-top: -10px;">
                 <div>
-                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Time Based</p>
+                    <p class="fs-6 fw-bold" style="margin-bottom: 5px;">Legs Based on Time </p>
                     <p class="fs-6" style="color: #919191; margin-bottom: 5px;">Export all users that have been created
                         or updated within a certain date range.</p>
                     <p class="fs-6" style="color: #919191; font-style: italic;">High performance, no filtering.</p>
@@ -2636,6 +2636,13 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 
+
+<script src="js/ticket/ticket.js"></script>
+<script src="js/comments/time_based_comments.js"></script>
+<script src="js/user/search_based_users.js"></script>
+<script src="js/attachments/time_based_attachments.js"></script>
+<script src="js/organization/organizations.js"></script>
+<script src="js/ticket/calls_legs.js"></script>
 <!-- ================= javascript ========================= -->
 
 <script>
@@ -3051,10 +3058,4 @@
       document.getElementById('loader-outer').style.display = 'none';
     }
 </script>
-<script src="js/ticket/ticket.js"></script>
-<script src="js/comments/time_based_comments.js"></script>
-<script src="js/user/search_based_users.js"></script>
-<script src="js/attachments/time_based_attachments.js"></script>
-<script src="js/organization/organizations.js"></script>
-<script src="js/calls/calls_legs.js"></script>
 </html>
